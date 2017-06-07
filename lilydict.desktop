@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=百合词典
+Comment=lilyDict百合词典
+Exec=/opt/lilydict/LilyDict %F
+Icon=/home/kevin/Pictures/suo.png
+Terminal=false
+Type=Application
+Categories=Office;
+
