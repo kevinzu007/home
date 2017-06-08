@@ -2,7 +2,7 @@
 Name=百合词典
 Comment=lilyDict百合词典
 Exec=/opt/lilydict/LilyDict %F
-Icon=/opt/lilydict/book_72px.png
+Icon=/opt/lilydict/lily_72px.png
 Terminal=false
 Type=Application
 Categories=Office;
