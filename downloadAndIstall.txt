@@ -1,0 +1,14 @@
+
+# p4merge --- git diff GUI tool:
+http://www.cnblogs.com/memory4young/p/installing-and-configuring-p4merge-for-git-on-ubuntu.html
+
+sudo vim /etc/profile.d/p4merge.sh
+export PATH="/opt/p4merge/bin:$PATH"
+
+git config --global diff.tool  p4merge
+
+
+######################################
+
+
+
