@@ -10,5 +10,12 @@ git config --global diff.tool  p4merge
 
 ######################################
 
+# wechat
+#下载微信：https://github.com/geeeeeeeeek/electronic-wechat/releases
+wget  https://github.com/geeeeeeeeek/electronic-wechat/releases/download/V2.0/linux-x64.tar.gz
+tar zxf /opt/......
+
+
+######################################
 
 
