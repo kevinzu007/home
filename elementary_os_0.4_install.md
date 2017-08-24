@@ -151,6 +151,7 @@ sudo dpkg -i nautilus_nutstore_amd64.deb
 sudo apt install -f
 
 # resilio-sync
+# https://help.resilio.com/hc/en-us/articles/206178924-Installing-Sync-package-on-Linux
 echo "deb http://linux-packages.resilio.com/resilio-sync/deb resilio-sync non-free" | sudo tee /etc/apt/sources.list.d/resilio-sync.list
 wget -qO - https://linux-packages.resilio.com/resilio-sync/key.asc | sudo apt-key add -
 sudo apt-get update
