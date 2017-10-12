@@ -30,7 +30,6 @@ sudo apt install ifstat
 sudo apt install sysstat
 sudo apt install dstat
 
-sudo apt install shadowsocks
 sudo apt install tcpdump
 sudo apt install nmap zenmap
  
@@ -62,15 +61,67 @@ sudo apt install  pidgin
 sudo apt install  firefox
 sudo apt install  steam
 
+# ss
+sudo apt install shadowsocks
+sudo cp /etc/shadowsocks-libev/config.json /etc/shadowsocks-libev/local-xg.json
+# vim /etc/shadowsocks-libev/local-xg.json
+sudo systemctl enable  shadowsocks-libev-local@local-xg
+sudo systemctl start   shadowsocks-libev-local@local-xg
+
+# socks5 to http proxy
+# polipo or privoxy
+sudo apt install privoxy
+# sudo vim /etc/privoxy/config
+#forward-socks5    /                127.0.0.1:1080
+#forward           .zjlh.lan        .
+#forward           192.168.*.*/     .
+#forward           127.*.*.*/       .
+#forward           localhost/       .
+
+
+# polipo has not update
+# http://droidyue.com/blog/2016/04/04/set-shadowsocks-proxy-for-terminal/index.html
+sudo apt install  polipo
+#sudo vim /etc/polipo/config
+# socksParentProxy = "localhost:1080"
+# socksProxyType = socks5
+# logLevel=4
+sudo /lib/systemd/systemd-sysv-install enable polipo
+sudo systemctl enable polipo.service
+sudo systemctl start  polipo.service
+
+# l2tp client
+sudo add-apt-repository ppa:nm-l2tp/network-manager-l2tp  
+sudo apt-get update  
+sudo apt-get install network-manager-l2tp-gnome
+
+# git lfs
+# https://git-lfs.github.com/
+# look readme
+
+
+# gitbook 
+# https://github.com/GitbookIO/gitbook/blob/master/docs/setup.md
+npm install gitbook-cli -g
+
+
 # NaSC
 sudo apt-add-repository ppa:nasc-team/daily
 sudo apt  update
 sudo apt  install nasc
 
+# uGet
+
+
+# FlareGet
+# https://flareget.com/download
+
+
 # deluge
 sudo add-apt-repository  ppa:deluge-team/ppa
 sudo apt  update
 sudo apt  install deluge
+
 
 # tweaks配置工具
 sudo add-apt-repository ppa:philip.scott/elementary-tweaks && sudo apt update
@@ -113,9 +164,28 @@ sudo apt install wireshark
 sudo add-apt-repository ppa:webupd8team/sublime-text-3
 sudo apt update
 sudo apt install sublime-text
- 
 
-# haroopad
+
+# typora - markdown
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
+sudo add-apt-repository 'deb http://typora.io linux/'
+sudo apt-get update
+sudo apt-get install typora
+# typora 主题：catfish
+# http://theme.typora.io/theme/Catfish/
+# 支持无衬线字体，衬线字体和等宽字体分别采用思源黑体，思源宋体
+wget  https://github.com/leaf-hsiao/catfish/archive/master.zip  -O ~/.config/Typora/themes/catfish-master.zip
+unzip  ~/.config/Typora/themes/catfish-master.zip  
+mv   ~/.config/Typora/themes/catfish-master/*   ~/.config/Typora/themes/
+# select menu [theme]->[catfish]
+
+
+# file converto pdf...
+wget  https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
+sudo dpkg -i  pandoc-1.19.2.1-1-amd64.deb
+
+
+# haroopad - markdown
 aria2c  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb
 sudo dpkg -i  haroopad-v0.13.1-x64.deb
  
@@ -134,8 +204,9 @@ sudo apt install  keepass2
 # 插件keepasshttp
 sudo apt install mono-complete
 sudo  wget  -P /usr/lib/keepass2/Plugins/  https://raw.github.com/pfn/keepasshttp/master/KeePassHttp.plgx
+# 中文语言包解决不了菜单栏乱码问题，可能没有菜单栏用的字体
 # 在添加记录的时候，填中文会乱码，解决方法：
-# 打开Keepass ----> Tools -> Options -> Interface -> 按钮"Select List Font" --> 选在可以中文的字体（也可以把列表中Force using system font (Unix only)的钩钩去掉，这种方法预览框还是乱码）
+# 打开Keepass ----> Tools -> Options -> Interface -> 按钮"Select List Font" --> 选在可以中文的字体；-->把列表中Force using system font (Unix only)的钩钩去掉。
 # 用法：http://devzc.com/post/465
  
  
@@ -150,13 +221,19 @@ wget  https://www.jianguoyun.com/static/exe/installer/ubuntu/nautilus_nutstore_a
 sudo dpkg -i nautilus_nutstore_amd64.deb 
 sudo apt install -f
 
+
 # resilio-sync
 # https://help.resilio.com/hc/en-us/articles/206178924-Installing-Sync-package-on-Linux
 echo "deb http://linux-packages.resilio.com/resilio-sync/deb resilio-sync non-free" | sudo tee /etc/apt/sources.list.d/resilio-sync.list
 wget -qO - https://linux-packages.resilio.com/resilio-sync/key.asc | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install resilio-sync
- 
+# Enable sync service as current user:
+sudo sed -i 's/WantedBy=multi-user.target/WantedBy=default.target/g' /usr/lib/systemd/user/resilio-sync.service
+systemctl --user enable resilio-sync
+systemctl --user start resilio-sync
+# http://127.0.0.1:8888
+
  
 # remote-tail
 git clone   https://github.com/mylxsw/remote-tail.git
@@ -193,6 +270,11 @@ sudo apt  install  -f
 mysql-workbench
 virtualbox
 /opt/lilydict/
+teletram
+zoom
+rocket.chat
+
+
 
 zsh  oh-my-zsh
 autojump
@@ -202,5 +284,23 @@ home
 blog
 
 
+
+OS代理用法样例:
+http_proxy=http://localhost:8123 
+apt-get update
+
+http_proxy=http://localhost:8123 
+curl http://www.google.com
+
+http_proxy=http://localhost:8123 
+wget http://www.google.com
+
+git config --global http.proxy 127.0.0.1:8123
+git clone  https://github.com/xxx/xxx.git
+git config --global --unset-all http.proxy
+
+
+# 查看当前互联网ip及城市
+curl ip.gs
 
 

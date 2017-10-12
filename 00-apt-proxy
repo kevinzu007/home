@@ -1,8 +1,8 @@
 # cp to /etc/apt/apt.conf.d/
-#Acquire::http::proxy "http://user:pwd@proxy.xxx:8080/";
+#Acquire::http::proxy  "http://user:pwd@proxy.xxx:8080/";
 #Acquire::https::proxy "https://user:pwd@proxy.xxx:8080/";
-#Acquire::ftp::Proxy "ftp://username:password@proxyhost:port/";
-Acquire::http::proxy "http://192.168.11.6:1080/";
-Acquire::https::proxy "https://192.168.11.6:1080/";
-Acquire::ftp::proxy "ftp://192.168.11.6:1080/";
+#Acquire::ftp::Proxy   "ftp://username:password@proxyhost:port/";
+Acquire::http::proxy  "http://192.168.11.6:1080/";
+Acquire::https::proxy "http://192.168.11.6:1080/";
+Acquire::ftp::proxy   "http://192.168.11.6:1080/";
 
