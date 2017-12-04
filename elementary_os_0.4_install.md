@@ -61,6 +61,12 @@ sudo apt install  pidgin
 sudo apt install  firefox
 sudo apt install  steam
 
+# 大小写指示器
+sudo add-apt-repository ppa:tsbarnes/indicator-keylock
+sudo apt-get update
+sudo apt-get install indicator-keylock
+
+
 # ss
 sudo apt install shadowsocks
 sudo cp /etc/shadowsocks-libev/config.json /etc/shadowsocks-libev/local-xg.json
@@ -196,7 +202,14 @@ wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key a
 sudo apt update
 sudo apt install  google-chrome-stable 
  
+
+# keepassXC -- 替代keepass2
+sudo add-apt-repository ppa:phoerious/keepassxc
+sudo apt update
+sudo apt install keepassxc
+#浏览器插件
  
+
 # keepass2
 sudo apt-add-repository ppa:jtaylor/keepass
 sudo apt update
@@ -302,5 +315,11 @@ git config --global --unset-all http.proxy
 
 # 查看当前互联网ip及城市
 curl ip.gs
+curl ip.sb
+
+
+# 开启or禁用触摸板
+sudo rmmod psmouse    #--- 禁用
+sudo modprobe psmouse #--- 启用
 
 
