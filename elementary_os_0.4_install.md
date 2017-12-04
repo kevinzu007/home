@@ -61,10 +61,19 @@ sudo apt install  pidgin
 sudo apt install  firefox
 sudo apt install  steam
 
+
 # 大小写指示器
 sudo add-apt-repository ppa:tsbarnes/indicator-keylock
 sudo apt-get update
 sudo apt-get install indicator-keylock
+
+# 触摸板
+sudo add-apt-repository ppa:atareao/atareao
+sudo apt-get update
+sudo apt-get install touchpad-indicator
+## 方法2：开启or禁用触摸板
+#sudo modprobe -r psmouse 或 sudo rmmod psmouse    #--- 禁用
+#sudo modprobe psmouse #--- 启用
 
 
 # ss
@@ -317,9 +326,5 @@ git config --global --unset-all http.proxy
 curl ip.gs
 curl ip.sb
 
-
-# 开启or禁用触摸板
-sudo rmmod psmouse    #--- 禁用
-sudo modprobe psmouse #--- 启用
 
 
