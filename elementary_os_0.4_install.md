@@ -58,7 +58,7 @@ sudo apt install  filezilla
 sudo apt install  fcitx  fcitx-googlepinyin
 sudo apt install  moc  moc-ffmpeg-plugin
 sudo apt install  pidgin
-sudo apt install  firefox
+sudo apt install  firefox firefox-locale-zh-hans
 sudo apt install  steam
 
 
