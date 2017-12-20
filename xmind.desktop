@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=8.0
+Name=xMind
+GenericName=xMaind Linux
+Comment=xMind8
+Exec=/opt/xmind/XMind_amd64/XMind
+Icon=/opt/xmind/xmind.png
+Terminal=false
+Type=Application
+Categories=Application;
+

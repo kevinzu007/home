@@ -291,6 +291,7 @@ xMind
 wget  http://xiazai.xmindchina.cn/trail/xmind-8-linux.zip
 unzip xmind-8-linux.zip -d /opt/xmind/
 sudo /opt/xmind/setup.sh
+modify   XMind_Linux_64bit/XMind.ini
 
 
 tomato
