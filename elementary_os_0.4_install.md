@@ -287,7 +287,10 @@ sudo apt  install  -f
  
 
 
+xMind
+wget  http://xiazai.xmindchina.cn/trail/xmind-8-linux.zip
 
+tomato
 
 mysql-workbench
 virtualbox
