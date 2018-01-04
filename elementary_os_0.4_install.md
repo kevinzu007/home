@@ -147,7 +147,8 @@ wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-
 echo "deb http://download.virtualbox.org/virtualbox/debian xenial contrib" | sudo tee  /etc/apt/sources.list.d/virtualbox.list
 sudo apt install virtualbox-5.1
 
-# pg --- https://www.postgresql.org/download/linux/ubuntu/
+# pg client
+# https://www.postgresql.org/download/linux/ubuntu/
 echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
   sudo apt-key add -
@@ -162,7 +163,10 @@ sudo apt install  postgresql-client-9.6
 # pgadmin4
 # http://www.linuxprobe.com/ubuntu-pgadmin-postgresql.html
  
- 
+# pgcli
+# http://www.postgres.cn/news/viewone/1/313
+sudo pip install pgcli
+
 # handbrakehi视频转码，含ong播放器n用dvd解码包，替代w32ocdes
 sudo add-apt-repository ppa:stebbins/handbrake-releases
 sudo apt update
@@ -314,19 +318,34 @@ blog
 
 
 
-OS代理用法样例:
-http_proxy=http://localhost:8123 
-apt-get update
+# 使用代理服务器样例:
+# apt 使用http代理：
+export http_proxy=http://localhost:8123 
+apt update
 
-http_proxy=http://localhost:8123 
-curl http://www.google.com
+# wget 使用http代理：
+wget  -e "http_proxy=http://localhost:8123"   http://www.wo.com/xx.zip
+-e  执行命令，此处设置环境变量，运行一个“.wgetrc”风格的命令
+##或
+export http_proxy=http://localhost:8123
+wget http://www.wo.com/xx.zip
 
-http_proxy=http://localhost:8123 
-wget http://www.google.com
+# curl 使用socket代理：
+-x [PROTOCOL://]HOST[:PORT]
+curl  -x 192.168.11.6:1080  -L <url/filename1>  -o </path/filename2>
+-x  设置代理，格式为host[:port]，port的缺省值为1080
+#
+# curl 使用http代理：
+-x [PROTOCOL://]HOST[:PORT]
+curl  -x http://192.168.11.6:8123  -L <url/filename1>  -o </path/filename2>
 
+# git 使用代理
 git config --global http.proxy 127.0.0.1:8123
 git clone  https://github.com/xxx/xxx.git
 git config --global --unset-all http.proxy
+
+
+
 
 
 # 查看当前互联网ip及城市

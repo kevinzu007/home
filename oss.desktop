@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=OSS Browser
+Comment=Aliyun OSS Browser 
+Type=Application
+Categories=Office;
+Exec=/opt/oss-browser-linux-x64/oss-browser %F
+Icon=/opt/lilydict/lily_72px.png
+Terminal=false
+
