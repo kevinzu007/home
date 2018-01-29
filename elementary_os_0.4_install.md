@@ -6,6 +6,20 @@ sudo apt install -y  software-properties-common python-software-properties
 sudo apt install -y  python3-dev python3-pip
 pip3 install --upgrade pip
 
+## ss
+# https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
+sudo apt-get install software-properties-common -y
+sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y
+sudo apt-get update
+sudo apt install shadowsocks-libev
+sudo systemctl enable  shadowsocks-libev-local@hk           #--- @hk 是service的参数"%i"
+#Created symlink from /etc/systemd/system/multi-user.target.wants/shadowsocks-libev-local@hk.service to /lib/systemd/system/shadowsocks-libev-local@.service.
+sudo cp /etc/shadowsocks-libev/config.json /etc/shadowsocks-libev/hk.json    #--- 文件名对应上面的@参数；修改里面的参数
+sudo systemctl start   shadowsocks-libev-local@hk.service
+
+
+
+
 # proxychains-ng
 git clone  https://github.com/rofl0r/proxychains-ng.git  ~/Downloads/proxychains-ng
 cd  ~/Downloads/proxychains-ng
@@ -96,19 +110,6 @@ sudo apt install -y  touchpad-indicator
 # ansible
 sudo apt-add-repository -y -u  ppa:ansible/ansible
 sudo apt install -y  ansible
-
-## ss
-##sudo apt install -y  shadowsocks
-#sudo apt install -y  shadowsocks-libev
-#sudo cp /etc/shadowsocks-libev/config.json /etc/shadowsocks-libev/local-xg.json
-## vim /etc/shadowsocks-libev/local-xg.json
-#sudo systemctl enable  shadowsocks-libev-local@local-xg
-#sudo systemctl start   shadowsocks-libev-local@local-xg
-# https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
-sudo apt-get install software-properties-common -y
-sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y
-sudo apt-get update
-sudo apt install shadowsocks-libev
 
 
 
