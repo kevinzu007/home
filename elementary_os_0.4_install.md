@@ -6,7 +6,12 @@ sudo apt install -y  software-properties-common python-software-properties
 sudo apt install -y  python3-dev python3-pip
 pip3 install --upgrade pip
 
-## ss
+sudo apt install -y  vim
+sudo apt install -y  git
+sudo apt install -y  snapd
+
+
+## ss : 1080
 # https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
 sudo apt-get install software-properties-common -y
 sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y
@@ -16,8 +21,6 @@ sudo systemctl enable  shadowsocks-libev-local@hk           #--- @hk 是service�
 #Created symlink from /etc/systemd/system/multi-user.target.wants/shadowsocks-libev-local@hk.service to /lib/systemd/system/shadowsocks-libev-local@.service.
 sudo cp /etc/shadowsocks-libev/config.json /etc/shadowsocks-libev/hk.json    #--- 文件名对应上面的@参数；修改里面的参数
 sudo systemctl start   shadowsocks-libev-local@hk.service
-
-
 
 
 # proxychains-ng
@@ -35,6 +38,17 @@ cd -
 proxychains4 curl  ip.sb    # test
 
 
+# privoxy --- socks5 to http proxy : 8118
+sudo apt install -y  privoxy
+# sudo vim /etc/privoxy/config
+#forward-socks5    /                127.0.0.1:1080
+#forward           .zjlh.lan        .
+#forward           192.168.*.*/     .
+#forward           127.*.*.*/       .
+#forward           localhost/       .
+
+
+
 sudo apt install -y  ntpdate
 sudo apt install -y  openssh-server
 sudo apt install -y  nfs-kernel-server
@@ -47,7 +61,6 @@ sudo apt install -y  unzip
 sudo apt install -y  p7zip  p7zip-rar
 sudo apt install -y  rar  unrar
  
-sudo apt install -y  git
 sudo apt install -y  aria2
 sudo apt install -y  axel
 sudo apt install -y  lftp
@@ -57,6 +70,7 @@ sudo apt install -y  iftop
 sudo apt install -y  ifstat
 sudo apt install -y  sysstat
 sudo apt install -y  dstat
+sudo apt install -y  virt-manager
 
 sudo apt install -y  tcpdump
 sudo apt install -y  nmap zenmap
@@ -70,13 +84,13 @@ mkdir  ~/.fonts
 
 
 sudo apt install -y  tmux
-sudo apt install -y  vim
 sudo apt install -y  tree
 sudo apt install -y  lnav
 sudo apt install -y  remmina remmina-plugin-rdp  remmina-plugin-vnc
 sudo apt install -y  gparted
 sudo apt install -y  sqlitebrowser
 sudo apt install -y  redis-tools
+sudo apt install -y  com.github.luizaugustomm.tomato
 
 
 sudo apt install -y  tlp
@@ -111,16 +125,6 @@ sudo apt install -y  touchpad-indicator
 sudo apt-add-repository -y -u  ppa:ansible/ansible
 sudo apt install -y  ansible
 
-
-
-# privoxy --- socks5 to http proxy
-sudo apt install -y  privoxy
-# sudo vim /etc/privoxy/config
-#forward-socks5    /                127.0.0.1:1080
-#forward           .zjlh.lan        .
-#forward           192.168.*.*/     .
-#forward           127.*.*.*/       .
-#forward           localhost/       .
 
 
 
@@ -164,6 +168,7 @@ sudo apt install -y  elementary-tweaks
 # virtualbox
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 echo "deb http://download.virtualbox.org/virtualbox/debian xenial contrib" | sudo tee  /etc/apt/sources.list.d/virtualbox.list
+sudo apt update
 sudo apt install virtualbox-5.2
 
 
@@ -215,7 +220,8 @@ sudo apt install -y  thefuck
  
 # pgcli --- 自动命令提示
 # http://www.postgres.cn/news/viewone/1/313
-sudo pip install pgcli
+pip3 install pgcli
+sudo pip3 install pgcli
 
 
 # handbrakehi视频转码，含ong播放器n用dvd解码包，替代w32ocdes
@@ -260,8 +266,9 @@ sudo apt install -y  typora
 # http://theme.typora.io/theme/Catfish/
 # 支持无衬线字体，衬线字体和等宽字体分别采用思源黑体，思源宋体
 # 运行一次才有这个目录 ~/.config/Typora/themes
+mkdir ~/.config/Typora/themes
 wget  https://github.com/leaf-hsiao/catfish/archive/master.zip  -O ~/.config/Typora/themes/catfish-master.zip
-unzip  ~/.config/Typora/themes/catfish-master.zip  
+unzip  ~/.config/Typora/themes/catfish-master.zip  -d ~/.config/Typora/themes
 mv   ~/.config/Typora/themes/catfish-master/*   ~/.config/Typora/themes/
 # select menu [theme]->[catfish]
 
@@ -292,14 +299,14 @@ sudo  wget  -P /usr/lib/keepass2/Plugins/  https://raw.github.com/pfn/keepasshtt
  
  
 
-# resilio-sync ---  被墙
+# resilio-sync ---  被墙 --- 香港也不行
 # https://help.resilio.com/hc/en-us/articles/206178924-Installing-Sync-package-on-Linux
 echo "deb http://linux-packages.resilio.com/resilio-sync/deb resilio-sync non-free" | sudo tee /etc/apt/sources.list.d/resilio-sync.list
 curl  https://linux-packages.resilio.com/resilio-sync/key.asc  \
     --socks5 192.168.11.10:1080  \
     | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install resilio-sync
+proxychains4  sudo apt-get update
+proxychains4  sudo apt-get install resilio-sync
 # Enable sync service as current user:
 sudo sed -i 's/WantedBy=multi-user.target/WantedBy=default.target/g' /usr/lib/systemd/user/resilio-sync.service
 systemctl --user enable resilio-sync
@@ -313,28 +320,53 @@ wget  https://github.com/mylxsw/remote-tail/releases/download/v0.1.1/remote-tail
 sudo  cp ./remote-tail/remote-tail-linux  /usr/local/bin/remote-tail
  
 
+# telegram
+# http://blog.topspeedsnail.com/archives/5116
+sudo add-apt-repository  -y -u  ppa:atareao/telegram
+sudo apt install -y  telegram
+
+
+
+
+# -----------------------
+# deb
+wget  https://www.zoom.us/client/latest/zoom_amd64.deb  -P ~/Downloads/
+sudo dpkg -i ~/Downloads/zoom_amd64.deb
+sudo apt install -f
+
+
+# Rocket.Chat client
+# https://github.com/RocketChat/Rocket.Chat.Electron/releases
+proxychains4  wget  https://github.com/RocketChat/Rocket.Chat.Electron/releases/download/2.10.2/rocketchat_2.10.2_amd64.deb  -O ~/Downloads/rocketchat_amd64.deb
+sudo  dpkg -i  ~/Downloads/rocketchat_amd64.deb
+
+
+
+
+# ------------------------
+# install bin to OPT
+mkdir  ~/.opt
+
 # xMind
-wget  http://xiazai.xmindchina.cn/trail/xmind-8-linux.zip
-unzip xmind-8-linux.zip -d /opt/xmind/
-sudo /opt/xmind/setup.sh
-modify   XMind_Linux_64bit/XMind.ini
+wget  http://xiazai.xmindchina.cn/trail/xmind-8-linux.zip  -O ~/Downloads/xmind-8-linux.zip
+unzip ~/Downloads/xmind-8-linux.zip  -d ~/.opt/xmind/
+sudo  ~/.opt/xmind/setup.sh
+# cp .desktop  
 
 
 
-
-# store
+# elementary OS store
 tomato
+
+
+# shou
+# sougoupinyin
+
 
 
 # bin.tar
 mysql-workbench
 lilydict
-zoom
-teletram
-rocket.chat
-
-
-
 zsh  oh-my-zsh
 autojump
 
