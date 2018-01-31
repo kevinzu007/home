@@ -157,7 +157,7 @@ sudo add-apt-repository -y -u  ppa:deluge-team/ppa
 sudo apt install -y  deluge
 
 # mldonkey
-sudo apt install  mldonkey-gui
+sudo apt install -y  mldonkey-server  mldonkey-gui   # or  kmldonkey
 
 # FlareGet
 # https://flareget.com/download
