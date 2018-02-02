@@ -126,8 +126,6 @@ sudo apt-add-repository -y -u  ppa:ansible/ansible
 sudo apt install -y  ansible
 
 
-
-
 # l2tp client
 #sudo add-apt-repository -y -u  ppa:nm-l2tp/network-manager-l2tp  
 #sudo apt-get update  
@@ -159,9 +157,6 @@ sudo apt install -y  deluge
 # mldonkey
 sudo apt install -y  mldonkey-server  mldonkey-gui   # or  kmldonkey
 
-# FlareGet
-# https://flareget.com/download
-
 
 # tweaks配置工具
 sudo add-apt-repository -y -u  ppa:philip.scott/elementary-tweaks
@@ -180,6 +175,21 @@ sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sour
 wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
 sudo apt update
 sudo apt install -y  google-chrome-stable 
+
+ 
+# # resilio-sync ---  被墙 --- 香港也不行
+# # https://help.resilio.com/hc/en-us/articles/206178924-Installing-Sync-package-on-Linux
+# echo "deb http://linux-packages.resilio.com/resilio-sync/deb resilio-sync non-free" | sudo tee /etc/apt/sources.list.d/resilio-sync.list
+# curl  https://linux-packages.resilio.com/resilio-sync/key.asc  \
+#     --socks5 192.168.11.10:1080  \
+#     | sudo apt-key add -
+# proxychains4  sudo apt-get update
+# proxychains4  sudo apt-get install resilio-sync
+# # Enable sync service as current user:
+# sudo sed -i 's/WantedBy=multi-user.target/WantedBy=default.target/g' /usr/lib/systemd/user/resilio-sync.service
+# systemctl --user enable resilio-sync
+# systemctl --user start resilio-sync
+# # http://127.0.0.1:8888
 
  
 # 命令自动修正thefuck（fuck）
@@ -242,22 +252,11 @@ sudo add-apt-repository -y -u  ppa:wiznote-team
 sudo apt install -y  wiznote
 
  
-# jiangguoyun
-wget -P ~/Downloads/ https://www.jianguoyun.com/static/exe/installer/ubuntu/nautilus_nutstore_amd64.deb
-sudo dpkg -i ~/Downloads/nautilus_nutstore_amd64.deb 
-sudo apt install -f
-
 
 # sublime
 sudo add-apt-repository -y -u  ppa:webupd8team/sublime-text-3
 sudo apt install -y  sublime-text
 
-
-# haroopad - markdown
-curl  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb  \
-    -L  -o ~/Downloads/haroopad-v0.13.1-x64.deb  \
-    --socks5 192.168.11.10:1080
-sudo dpkg -i  ~/Downloads/haroopad-v0.13.1-x64.deb
 
 
 # typora - markdown
@@ -274,12 +273,6 @@ wget  https://github.com/leaf-hsiao/catfish/archive/master.zip  -O ~/.config/Typ
 unzip  ~/.config/Typora/themes/catfish-master.zip  -d ~/.config/Typora/themes
 mv   ~/.config/Typora/themes/catfish-master/*   ~/.config/Typora/themes/
 # select menu [theme]->[catfish]
-
-
-# file converto pdf...
-#wget -P ~/Downloads/  https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
-#sudo dpkg -i  ~/Downloads/pandoc-1.19.2.1-1-amd64.deb
-sudo apt install -y  pandoc
 
 
 
@@ -300,28 +293,6 @@ sudo  wget  -P /usr/lib/keepass2/Plugins/  https://raw.github.com/pfn/keepasshtt
 # 打开Keepass ----> Tools -> Options -> Interface -> 按钮"Select List Font" --> 选在可以中文的字体；-->把列表中Force using system font (Unix only)的钩钩去掉。
 # 用法：http://devzc.com/post/465
  
- 
-
-# resilio-sync ---  被墙 --- 香港也不行
-# https://help.resilio.com/hc/en-us/articles/206178924-Installing-Sync-package-on-Linux
-echo "deb http://linux-packages.resilio.com/resilio-sync/deb resilio-sync non-free" | sudo tee /etc/apt/sources.list.d/resilio-sync.list
-curl  https://linux-packages.resilio.com/resilio-sync/key.asc  \
-    --socks5 192.168.11.10:1080  \
-    | sudo apt-key add -
-proxychains4  sudo apt-get update
-proxychains4  sudo apt-get install resilio-sync
-# Enable sync service as current user:
-sudo sed -i 's/WantedBy=multi-user.target/WantedBy=default.target/g' /usr/lib/systemd/user/resilio-sync.service
-systemctl --user enable resilio-sync
-systemctl --user start resilio-sync
-# http://127.0.0.1:8888
-
- 
-# remote-tail
-git clone   https://github.com/mylxsw/remote-tail.git
-wget  https://github.com/mylxsw/remote-tail/releases/download/v0.1.1/remote-tail-linux  -P ./remote-tail
-sudo  cp ./remote-tail/remote-tail-linux  /usr/local/bin/remote-tail
- 
 
 # telegram
 # http://blog.topspeedsnail.com/archives/5116
@@ -333,6 +304,21 @@ sudo apt install -y  telegram
 
 # -----------------------
 # deb
+
+# jiangguoyun
+wget -P ~/Downloads/ https://www.jianguoyun.com/static/exe/installer/ubuntu/nautilus_nutstore_amd64.deb
+sudo dpkg -i ~/Downloads/nautilus_nutstore_amd64.deb 
+sudo apt install -f
+
+
+# haroopad - markdown
+curl  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb  \
+    -L  -o ~/Downloads/haroopad-v0.13.1-x64.deb  \
+    --socks5 192.168.11.10:1080
+sudo dpkg -i  ~/Downloads/haroopad-v0.13.1-x64.deb
+
+
+# zoom
 wget  https://www.zoom.us/client/latest/zoom_amd64.deb  -P ~/Downloads/
 sudo dpkg -i ~/Downloads/zoom_amd64.deb
 sudo apt install -f
@@ -343,6 +329,26 @@ sudo apt install -f
 proxychains4  wget  https://github.com/RocketChat/Rocket.Chat.Electron/releases/download/2.10.2/rocketchat_2.10.2_amd64.deb  -O ~/Downloads/rocketchat_amd64.deb
 sudo  dpkg -i  ~/Downloads/rocketchat_amd64.deb
 
+
+# deepin截图
+# http://blog.csdn.net/groundhappy/article/details/54896747
+udo apt-get install python-xlib
+wget http://packages.linuxdeepin.com/deepin/pool/main/d/deepin-scrot/deepin-scrot_2.0-0deepin_all.deb  -P ~/Downloads/
+sudo dpkg -i ~/Downloads/deepin-scrot*
+# run "/usr/bin/deepin-scrot  > /dev/null 2&1"
+# 添加系统快捷键，例如：Ctrl-Alt-A
+
+
+# file converto pdf...
+#wget -P ~/Downloads/  https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
+#sudo dpkg -i  ~/Downloads/pandoc-1.19.2.1-1-amd64.deb
+sudo apt install -y  pandoc
+
+
+# 手动下载
+# sougoupinyin
+# youdaodict
+# neteasteMusic
 
 
 
@@ -358,12 +364,22 @@ sudo  ~/.opt/xmind/setup.sh
 
 
 
+
+# ------------------------
+# source install
+
+# remote-tail
+git clone   https://github.com/mylxsw/remote-tail.git
+wget  https://github.com/mylxsw/remote-tail/releases/download/v0.1.1/remote-tail-linux  -P ./remote-tail
+sudo  cp ./remote-tail/remote-tail-linux  /usr/local/bin/remote-tail
+
+
+ 
+
+# ------------------------
 # elementary OS store
 tomato
 
-
-# shou
-# sougoupinyin
 
 
 
