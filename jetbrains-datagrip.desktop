@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DataGrip
+Icon=/home/kevin/.opt/DataGrip-2017.3.4/bin/datagrip.png
+Exec="/home/kevin/.opt/DataGrip-2017.3.4/bin/datagrip.sh" %f
+Comment=The Drive to Develop
+Categories=Development;IDE;
+Terminal=false

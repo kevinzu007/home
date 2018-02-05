@@ -83,11 +83,13 @@ sudo apt install -y  xfonts-wqy
 mkdir  ~/.fonts
 
 
+sudo apt install -y  catfish
 sudo apt install -y  tmux
 sudo apt install -y  tree
 sudo apt install -y  lnav
 sudo apt install -y  remmina remmina-plugin-rdp  remmina-plugin-vnc
 sudo apt install -y  gparted
+sudo apt install -y  mysql-workbench
 sudo apt install -y  sqlitebrowser
 sudo apt install -y  redis-tools
 sudo apt install -y  com.github.luizaugustomm.tomato
@@ -101,6 +103,7 @@ sudo apt install -y  filezilla
 #sudo apt install -y  fcitx  fcitx-googlepinyin
 sudo apt install -y  moc  moc-ffmpeg-plugin
 #sudo apt install -y  pidgin
+sudo apt install -y  iptux
 sudo apt install -y  chromium-browser
 sudo apt install -y  firefox  #firefox-locale-zh-hans
 sudo apt install -y  steam
@@ -201,19 +204,20 @@ sudo apt install -y  google-chrome-stable
 sudo apt install -y  thefuck 
 
 
-## pg client
-## https://www.postgresql.org/download/linux/ubuntu/
-#echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
-#wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
-#  sudo apt-key add -
-#sudo apt-get update
-#sudo apt install  postgresql-client-9.6
-## /usr/lib/postgresql/9.6/bin/initdb -D /var/lib/postgresql/9.6/main --auth-local peer --auth-host md5
-## Success. You can now start the database server using:
-##     /usr/lib/postgresql/9.6/bin/pg_ctl -D /var/lib/postgresql/9.6/main -l logfile start
-## Ver Cluster Port Status Owner    Data directory               Log file
-## 9.6 main    5432 down   postgres /var/lib/postgresql/9.6/main /var/log/postgresql/postgresql-9.6-main.log
-#
+# pg client & pgadmin
+# https://www.postgresql.org/download/linux/ubuntu/
+echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
+  sudo apt-key add -
+sudo apt-get update
+sudo apt install -y  pgadmin4 postgresql-client    #--- 不加版本号，代表最新版，下同
+# /usr/lib/postgresql/9.6/bin/initdb -D /var/lib/postgresql/9.6/main --auth-local peer --auth-host md5
+# Success. You can now start the database server using:
+#     /usr/lib/postgresql/9.6/bin/pg_ctl -D /var/lib/postgresql/9.6/main -l logfile start
+# Ver Cluster Port Status Owner    Data directory               Log file
+# 9.6 main    5432 down   postgres /var/lib/postgresql/9.6/main /var/log/postgresql/postgresql-9.6-main.log
+
+
 ## pgadmin4
 ## https://www.postgresql.org/ftp/pgadmin/pgadmin4/v2.0/pip/
 ## http://blog.csdn.net/dream_an/article/details/53463187
@@ -332,10 +336,10 @@ sudo  dpkg -i  ~/Downloads/rocketchat_amd64.deb
 
 # deepin截图
 # http://blog.csdn.net/groundhappy/article/details/54896747
-udo apt-get install python-xlib
+sudo apt install -y  python-xlib
 wget http://packages.linuxdeepin.com/deepin/pool/main/d/deepin-scrot/deepin-scrot_2.0-0deepin_all.deb  -P ~/Downloads/
 sudo dpkg -i ~/Downloads/deepin-scrot*
-# run "/usr/bin/deepin-scrot  > /dev/null 2&1"
+# run "/usr/bin/deepin-scrot  > /dev/null 2>&1"
 # 添加系统快捷键，例如：Ctrl-Alt-A
 
 
@@ -345,8 +349,41 @@ sudo dpkg -i ~/Downloads/deepin-scrot*
 sudo apt install -y  pandoc
 
 
+# teamviewer
+wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb  -P ~/Downloads/
+sudo dpkg -i ~/Downloads/teamviewer_amd64.deb
+sudo apt install -f -y
+
+
+
 # 手动下载
+
+# smartGit
+# https://www.syntevo.net/smartgit/download/
+# 运行选择第三项 非商业 使用
+
+# gitkragen
+# https://www.gitkraken.com/download
+# 使用方法：https://www.cnblogs.com/thousfeet/p/7840932.html
+
+# Beyond Compare
+# http://www.scootersoftware.com/download.php
+# 无限试用，删除下面这个文件：
+# rm -rf ~/.config/bcompare/registry.dat
+
+# jetbrains系列软件
+# 破解输入这个：http://xidea.online
+# IntelliJ IDEA
+# https://www.jetbrains.com/idea/download/#section=linux
+# DataGrip
+# https://www.jetbrains.com/datagrip/download/#section=linux
+# WebStorm
+# https://www.jetbrains.com/webstorm/
+
+
 # sougoupinyin
+# https://pinyin.sogou.com/linux/?r=pinyin
+
 # youdaodict
 # neteasteMusic
 
