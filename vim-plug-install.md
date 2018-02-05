@@ -1,5 +1,5 @@
 
-# 大而全，不知哪些是自己需要的
+# 大而全的插件集群，可能有些不是自己需要的，总体挺好，请看链接
 # https://github.com/amix/vimrc.git
 git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
 sh ~/.vim_runtime/install_awesome_vimrc.sh
@@ -8,10 +8,14 @@ sh ~/.vim_runtime/install_awesome_vimrc.sh
 # 将插件clone到 ~/.vim_runtime/sources_non_forked 目录中。
 # 例如vim-rails： git clone git://github.com/tpope/vim-rails.git  sources_non_forked/vim-rails
 
+# 在插入模式自动进入粘贴模式：如果在shell编程时，不会自动缩进
+#git clone   https://github.com/ConradIrwin/vim-bracketed-paste.git  ~/.vim_runtime/sources_non_forked/vim-bracketed-paste
 
 
-# ======================
-# 也可以把插件安装到其他目录，例如pathogen的默认目录
+
+
+
+# 以下用pathogen管理工具安装vim插件，diy自己的插件库======================
 #
 # 插件管理工具pathogen
 # https://github.com/tpope/vim-pathogen.git
@@ -46,6 +50,8 @@ git clone  https://github.com/itchyny/lightline.vim.git
 # 多种语言语法检查 --- 这个在大而全里面已经有了
 git clone  cd ~/.vim/bundle && \
 git clone --depth=1 https://github.com/vim-syntastic/syntastic.git
+
+
 
 
 
