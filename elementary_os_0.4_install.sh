@@ -230,7 +230,7 @@ sudo pip3 install pgcli
 # https://docs.docker.com/install/linux/docker-ce/ubuntu/#set-up-the-repository
 sudo apt remove  docker docker-engine docker.io
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable" | tee /etc/apt/sources.list.d/docker-ce.list
+echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable" | sudo tee /etc/apt/sources.list.d/docker-ce.list
 sudo apt update
 sudo apt install -y  docker-ce
 
@@ -314,6 +314,8 @@ curl  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1
     -L  -o ~/Downloads/haroopad-v0.13.1-x64.deb  \
     --socks5 192.168.11.10:1080
 sudo dpkg -i  ~/Downloads/haroopad-v0.13.1-x64.deb
+# 使用中，如果不能打开，请删除tmp文件
+#rm  ~/.config/Haroopad/.tmp/*
 
 
 # zoom
@@ -364,6 +366,10 @@ sudo apt install -f -y
 # http://www.scootersoftware.com/download.php
 # 无限试用，删除下面这个文件：
 # rm -rf ~/.config/bcompare/registry.dat
+
+# navicat
+# https://www.navicat.com.cn/download/navicat-premium
+# 无限试用，删除system.reg
 
 # jetbrains系列软件
 # 破解输入这个：http://xidea.online
@@ -498,6 +504,18 @@ curl ip.sb
 # 系统菜单文件夹
 # ~/.local/share/applications
 # 用户菜单文件夹
+
+
+
+# mutt
+sudo apt install -y  mutt
+sudo apt autoremove  postfix
+sudo apt install -y  w3m feh abook
+
+
+# ewomail
+# http://ewomail.com/list-11.html
+
 
 
 
