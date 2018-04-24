@@ -415,7 +415,6 @@ sudo  cp ./remote-tail/remote-tail-linux  /usr/local/bin/remote-tail
 
 # ------------------------
 # elementary OS store
-tomato
 
 
 
@@ -423,8 +422,6 @@ tomato
 # bin.tar
 zsh  oh-my-zsh
 autojump
-
-# p4merge --- git diff GUI tool
 
 
 
@@ -517,5 +514,65 @@ sudo apt install -y  w3m feh abook
 # http://ewomail.com/list-11.html
 
 
+# SonarQube
+# http://blog.csdn.net/kefengwang/article/details/54377055
+# https://www.cnblogs.com/ceshi2016/p/6529453.html
+# https://docs.sonarqube.org/display/PLUG/Plugin+Library
+
+
+
+# p4merge
+# http://www.cnblogs.com/memory4young/p/installing-and-configuring-p4merge-for-git-on-ubuntu.html
+wget http://cdist2.perforce.com/perforce/r17.3/bin.linux26x86_64/p4v.tgz -P ~/Downloads/
+tar zxf  Downloads/p4v.tgz  -C ./.opt/
+sudo ln -s  ~/.opt/p4v-2017.3.1601999/bin/p4merge  /usr/local/bin/p4merge
+
+vim ~/.gitconfig
+--------------------
+[merge]
+        keepBackup = false
+        tool = p4merge
+[mergetool]
+        prompt = false
+[mergetool "p4merge"]
+        cmd = p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+        keepTemporaries = false
+        trustExitCode = false
+        keepBackup = false
+[diff]
+        tool = p4merge
+[difftool]
+        prompt = false
+[difftool "p4merge"]
+        cmd = p4merge "$LOCAL" "$REMOTE"
+        keepTemporaries = false
+        trustExitCode = false
+        keepBackup = false
+-------------------
+也可以用系统自带工具：
+git config --global diff.tool vimdiff
+git config --global difftool.prompt false
+---
+[diff]
+   tool = vimdiff
+[difftool]
+   prompt = false
+---
+
+
+
+# vps性能速度测试
+# https://wzfou.com/vps-ceping-gongju/
+
+
+# vim正则替换
+%s/\(.*$\)/\1,\1/gc
+%s/\(.\+$\)/\1,\1/gc
+
+# 分支信息都显示出来：
+即
+git log --graph --all --decorate
+或者
+git log --graph --all --decorate=short
 
 
