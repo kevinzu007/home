@@ -254,6 +254,10 @@ sudo apt install -y  wiznote
 # sublime
 sudo add-apt-repository -y -u  ppa:webupd8team/sublime-text-3
 sudo apt install -y  sublime-text
+# 修复在fcitx框架下不能输入中文的问题
+git clone https://github.com/lyfeyaj/sublime-text-imfix.git
+cd sublime-text-imfix
+./sublime-imfix
 
 
 
@@ -513,11 +517,22 @@ sudo apt install -y  w3m feh abook
 # ewomail
 # http://ewomail.com/list-11.html
 
+# 快速部署
+# bitnami
 
 # SonarQube
 # http://blog.csdn.net/kefengwang/article/details/54377055
 # https://www.cnblogs.com/ceshi2016/p/6529453.html
 # https://docs.sonarqube.org/display/PLUG/Plugin+Library
+
+# 2018 最好的自动化测试工具
+# Selenium | Katalon Studio
+# https://blog.csdn.net/xuecancan/article/details/79529155
+# https://blog.csdn.net/huyanyan08/article/details/78753637
+# 浏览器插件：Katalon Recorder
+# https://www.katalon.com/resources-center/blog/katalon-automation-recorder/#
+# https://www.seleniumhq.org/
+# ./katalon -runMode=console -email kevinzu007@gmail.com -password=1qaz2wsx
 
 
 
@@ -575,4 +590,31 @@ git log --graph --all --decorate
 或者
 git log --graph --all --decorate=short
 
+
+
+# apt update 错误：N: 无法安全地用该源进行更新，所以默认禁用该源。
+# 改用 apt-get udpate 好像可以哦
+
+
+# remi输入法（基于ibus）
+sudo apt install -y  ibus-rime
+ibus-setup    #--- 添加rime输入法
+ibus-daemon -drx    #--- (重新)启动ibus服务，ok
+# 设置自启动/usr/bin/ibus-daemon -drx ; 按 Ctrl + ` 选择只使用简体汉字
+# 词库，不知道能不能用：https://code.google.com/archive/p/hslinuxextra/downloads
+
+
+# 禁用快捷键
+# 按 '删除键' 即可
+
+
+# 高级配置工具
+sudo apt install -y  dconf-tools
+
+# 好用的编程字体：YaHei Consolas Hybrid
+wget -qO- https://raw.githubusercontent.com/yakumioto/YaHei-Consolas-Hybrid-1.12/master/install.sh | sudo sh
+
+
+# 解决Linux下解压zip包后的文件名乱码问题
+# unzip -O cp936 xxx.zip
 
