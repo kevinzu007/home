@@ -377,6 +377,9 @@ sudo apt install -f -y
 
 # jetbrains系列软件
 # 破解输入这个：http://xidea.online
+# 自建破解服务器：
+#     # docker run -d -p 8888:8888 ilanyu/golang-reverseproxy
+#     输入激活服务器地址：http://ip:8888
 # IntelliJ IDEA
 # https://www.jetbrains.com/idea/download/#section=linux
 # DataGrip
@@ -526,14 +529,16 @@ sudo apt install -y  w3m feh abook
 # https://docs.sonarqube.org/display/PLUG/Plugin+Library
 
 # 2018 最好的自动化测试工具
-# Selenium | Katalon Studio
+# Selenium/Appium | Katalon Studio
 # https://blog.csdn.net/xuecancan/article/details/79529155
 # https://blog.csdn.net/huyanyan08/article/details/78753637
 # 浏览器插件：Katalon Recorder
 # https://www.katalon.com/resources-center/blog/katalon-automation-recorder/#
 # https://www.seleniumhq.org/
-# ./katalon -runMode=console -email kevinzu007@gmail.com -password=1qaz2wsx
-
+# ./katalon -runMode=console -email kevinzu007@gmail.com -password=1qaz2wsx <projectPath>
+# https://docs.katalon.com/display/KD/Console+Mode+Execution
+# https://docs.katalon.com/display/KD/Tutorials
+# https://www.jianshu.com/p/e52abbd6aee7?from=groupmessage
 
 
 # p4merge
@@ -580,7 +585,7 @@ git config --global difftool.prompt false
 # https://wzfou.com/vps-ceping-gongju/
 
 
-# vim正则替换
+# vim正则替换，例如下：将每行的文字"anyabc"替换为"anyabc,anyabc"
 %s/\(.*$\)/\1,\1/gc
 %s/\(.\+$\)/\1,\1/gc
 
@@ -590,6 +595,13 @@ git log --graph --all --decorate
 或者
 git log --graph --all --decorate=short
 
+
+# SHA1
+# 基于这个提交创建一个分支，并切换过去
+git checkout  -b rollback_180606  023465cc76018a6dbd1a10f6d4b31654be3c1c3f
+
+# 切换到这个commit
+git checkout  023465cc76018a6dbd1a10f6d4b31654be3c1c3f
 
 
 # apt update 错误：N: 无法安全地用该源进行更新，所以默认禁用该源。
@@ -617,4 +629,19 @@ wget -qO- https://raw.githubusercontent.com/yakumioto/YaHei-Consolas-Hybrid-1.12
 
 # 解决Linux下解压zip包后的文件名乱码问题
 # unzip -O cp936 xxx.zip
+
+
+
+git checkout 大法：
+git checkout   #--- 检查当前分支
+git checkout <branch> | <commitID> | <tag>  #--- 切换到分支 | 切换到某次提交 | 切换到某tag
+git checkout -b <新branch> [ <branch> | <commitID> | <tag>]  #--- 基于 某分支/提交/tag 建立新分支，并切换过去
+
+
+
+git revert <commitID>   #--- 回滚到<commitID>，包含<commitID>的代码也会被回滚掉
+git revert <commitID> <-m 1|2 >  #--- 如果<commitID>是merge commit，则需要加上-m参数，用来指定谁作为父，当前分支为1，回滚的<commitID>为2
+
+
+
 

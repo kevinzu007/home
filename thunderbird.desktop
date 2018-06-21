@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=pgAdmin
+Name=thunderbird
 Icon=/home/kevin/git_project/wan/for_me/home/logo-gclife.png
-Exec="/usr/bin/pgadmin4" %f
-Comment=The Drive to Develop
+Exec="/home/kevin/.opt/thunderbird/thunderbird" %f
+Comment=thunderbird邮箱客户端
 Categories=Development;
 Terminal=false
