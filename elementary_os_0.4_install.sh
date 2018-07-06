@@ -100,7 +100,9 @@ sudo apt install -y  com.github.luizaugustomm.tomato
 sudo apt install -y  tlp
 sudo apt install -y  libreoffice  libreoffice-l10n-zh-cn
 sudo apt install -y  inkscape
+sudo apt install -y  dia
 sudo apt install -y  gimp
+sudo apt install -y  planner
 sudo apt install -y  filezilla
 #sudo apt install -y  fcitx  fcitx-googlepinyin
 sudo apt install -y  moc  moc-ffmpeg-plugin
@@ -377,7 +379,8 @@ sudo apt install -f -y
 
 # jetbrains系列软件
 # 破解输入这个：http://xidea.online
-# 自建破解服务器：
+# 自建破解服务器
+# http://idea.lanyus.com/
 #     # docker run -d -p 8888:8888 ilanyu/golang-reverseproxy
 #     输入激活服务器地址：http://ip:8888
 # IntelliJ IDEA
