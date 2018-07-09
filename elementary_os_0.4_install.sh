@@ -633,6 +633,15 @@ wget -qO- https://raw.githubusercontent.com/yakumioto/YaHei-Consolas-Hybrid-1.12
 # 解决Linux下解压zip包后的文件名乱码问题
 # unzip -O cp936 xxx.zip
 
+# 非空目录初始化并关联远程仓库的方法
+git init
+git add .
+git commit -m "new"
+git remote add origin git@g.zjlh.lan:zhuhongfeng/frp.git
+# 在gitlab服务器上建立frp仓库，然后：
+git push --set-upstream origin master
+
+
 
 
 git checkout 大法：
