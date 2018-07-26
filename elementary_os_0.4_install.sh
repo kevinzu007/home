@@ -655,5 +655,9 @@ git revert <commitID>   #--- 回滚到<commitID>，包含<commitID>的代码也�
 git revert <commitID> <-m 1|2 >  #--- 如果<commitID>是merge commit，则需要加上-m参数，用来指定谁作为父，当前分支为1，回滚的<commitID>为2
 
 
+Git diff branch1 branch2 --stat   //显示出所有有差异的文件列表
+Git diff branch1 branch2 文件名(带路径)   //显示指定文件的详细差异
+Git diff branch1 branch2                   //显示出所有有差异的文件的详细差异
+
 
 
