@@ -661,3 +661,17 @@ Git diff branch1 branch2                   //显示出所有有差异的文件�
 
 
 
+# transmission
+#https://launchpad.net/ubuntu/+source/transmission/2.94-1ubuntu1
+# http://blog.sina.com.cn/s/blog_406127500101a9c0.html
+# https://www.linuxidc.com/Linux/2009-01/18048.htm
+# https://blog.csdn.net/jiyuanyi1992/article/details/44250943
+sudo apt install libcurl4-openssl-dev  libevent-dev  zlib1g-dev  libssl-dev  intltool
+./configure  --enable-cli  #--- --with-gtk
+make
+sudo make install
+运行：/usr/local/bin/transmission-daemon
+浏览器：http://127.0.0.1:9091
+
+
+
