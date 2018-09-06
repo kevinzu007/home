@@ -111,6 +111,7 @@ sudo apt install -y  iptux
 sudo apt install -y  chromium-browser
 sudo apt install -y  firefox  #firefox-locale-zh-hans
 sudo apt install -y  steam
+sudo apt install -y  pwgen
 
 
 #win+ubuntu:
@@ -461,6 +462,7 @@ autojump
 # # wget使用http代理：
 # # -e ： 设置变量，运行一个“.wgetrc”风格的命令
 # # -P ： 文件保存路径
+# # -O ： 目标文件名
 # # --no-check-certificate ： 不检查证书
 # # wget自动跟随链接重定向
 # wget  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb  \
@@ -672,6 +674,17 @@ make
 sudo make install
 运行：/usr/local/bin/transmission-daemon
 浏览器：http://127.0.0.1:9091
+
+
+
+# 条件判断
+# https://blog.csdn.net/jasonzeng/article/details/53286384
+[  ]  ：表示条件测试。
+[[  ]]：表示高级字符串处理函数
+    双方括号中判断命令使用标准的字符串比较，还可以使用匹配模式，从而定义与字符串相匹配的正则表达式。
+((  ))：表示数学表达式
+    在判断命令中只允许在比较中进行简单的算术操作，而双圆括号提供更多的数学符号，而且在双圆括号里面的'>','<'号不需要转意。
+
 
 
 
