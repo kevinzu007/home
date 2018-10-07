@@ -112,6 +112,8 @@ sudo apt install -y  chromium-browser
 sudo apt install -y  firefox  #firefox-locale-zh-hans
 sudo apt install -y  steam
 sudo apt install -y  pwgen
+sudo apt install -y sox libsox-fmt-all   #命令行音乐播放器
+sudo apt install -y audacious
 
 
 #win+ubuntu:
@@ -646,20 +648,30 @@ git push --set-upstream origin master
 
 
 
-git checkout 大法：
+# git checkout 大法：
 git checkout   #--- 检查当前分支
 git checkout <branch> | <commitID> | <tag>  #--- 切换到分支 | 切换到某次提交 | 切换到某tag
 git checkout -b <新branch> [ <branch> | <commitID> | <tag>]  #--- 基于 某分支/提交/tag 建立新分支，并切换过去
 
-
-
 git revert <commitID>   #--- 回滚到<commitID>，包含<commitID>的代码也会被回滚掉
 git revert <commitID> <-m 1|2 >  #--- 如果<commitID>是merge commit，则需要加上-m参数，用来指定谁作为父，当前分支为1，回滚的<commitID>为2
-
 
 Git diff branch1 branch2 --stat   //显示出所有有差异的文件列表
 Git diff branch1 branch2 文件名(带路径)   //显示指定文件的详细差异
 Git diff branch1 branch2                   //显示出所有有差异的文件的详细差异
+
+
+# git回滚
+# 未使用 git add 缓存代码时。
+git checkout .
+git checkout -- filepathname
+# 已经使用了  git add 缓存了代码。
+git reset HEAD .
+git reset HEAD filepathname
+# 已经用 git commit  提交了代码。
+git reset --hard HEAD^        回退到上一次commit的状态
+git reset --hard  commitid    回退到任意版本
+
 
 
 
@@ -685,6 +697,60 @@ sudo make install
 ((  ))：表示数学表达式
     在判断命令中只允许在比较中进行简单的算术操作，而双圆括号提供更多的数学符号，而且在双圆括号里面的'>','<'号不需要转意。
 
+
+
+# 拷贝文件
+rsync -av ../pg --exclude=.git root@47.52.22.138:~/
+cp  `ls | grep -v zhidao.txt | xargs`   /test2
+
+
+
+# 所有支持的语言编码
+cat /usr/share/i18n/SUPPORTED
+# 查看已启用的编码
+locale -a
+# 添加新支持编码，并使编码生效
+sudo vim /var/lib/locales/supported.d/local
+  zh_CN.GB18030 GB18030
+  zh_CN.GBK GBK
+  zh_CN GB2312
+locale-gen
+
+
+
+
+
+
+
+# oracle备份
+create directory backup_dir  as '/u01/backup/nc65';
+
+DbUserName=nc65
+DbPassword=rmIBoJ628nP1bzw1OXnW
+DbSchemas=nc65
+ExpdpOption=
+OracleDirectoryName=backup_dir
+DbBackupToFileName=nc65-expdp
+
+expdp ${DbUserName}/${DbPassword} schemas=${DbSchemas} ${ExpdpOption} directory=${OracleDirectoryName} dumpfile=${DbBackupToFileName}.dmp logfile=${DbBackupToFileName}.log
+
+
+# 建立pg只读用户
+CREATE USER ff83df9995bc56df WITH ENCRYPTED PASSWORD '91ebf844c8ea7e3dcde2478d93b756';
+alter user ff83df9995bc56df set default_transaction_read_only=on ;
+grant USAGE ON SCHEMA public to ff83df9995bc56df ;
+在某数据库中：
+grant select on all tables in schema public to ff83df9995bc56df ;
+
+for DB in `cat ./pg_db.list`
+do
+    echo ----- ${DB} -----
+/usr/local/pgsql/bin/psql << EOF
+    \c ${DB}
+    grant select on all tables in schema public to ff83df9995bc56df ;
+    \q
+EOF
+done
 
 
 
