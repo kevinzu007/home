@@ -64,7 +64,8 @@ sudo apt install -y  p7zip  p7zip-rar
 sudo apt install -y  rar  unrar
 
 sudo apt install -y  aria2
-sudo apt install -y  axel
+sudo apt install -y  axel       #--- 多路http下载加速
+sudo apt install -y  rtorrent   #--- 命令行torrent客户端
 sudo apt install -y  lftp
 
 sudo apt install -y  bmon
@@ -113,7 +114,7 @@ sudo apt install -y  firefox  #firefox-locale-zh-hans
 sudo apt install -y  steam
 sudo apt install -y  pwgen
 sudo apt install -y sox libsox-fmt-all   #命令行音乐播放器
-sudo apt install -y audacious
+sudo apt install -y audacious    #音乐播放器，支持音乐信息中的gbk中文（设置自动检测中文，os需安装gbk支持）
 
 
 #win+ubuntu:
@@ -144,6 +145,10 @@ sudo apt install -y  ansible
 # git lfs
 # https://git-lfs.github.com/
 # look readme
+# https://cloud.tencent.com/developer/article/1010589
+sudo curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt-get install git-lfs
+git lfs install
 
 
 # gitbook
@@ -185,6 +190,17 @@ sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sour
 wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
 sudo apt update
 sudo apt install -y  google-chrome-stable
+
+
+# asciinema终端录屏
+# https://asciinema.org/docs/installation#installing-on-linux
+sudo apt-add-repository ppa:zanchey/asciinema
+sudo apt-get update
+sudo apt-get install asciinema
+## 用法：
+## 录制到文件：asciinema rec <TO_filename.cast>
+## 录制到官网：asciinema play
+## 播放本地文件：asciinema play  <TO_filename.cast>
 
 
 # # resilio-sync ---  被墙 --- 香港也不行
@@ -325,6 +341,10 @@ curl  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1
 sudo dpkg -i  ~/Downloads/haroopad-v0.13.1-x64.deb
 # 使用中，如果不能打开，请删除tmp文件
 #rm  ~/.config/Haroopad/.tmp/*
+
+
+# marktext - markdown
+# https://github.com/marktext/marktext/releases
 
 
 # zoom
@@ -717,7 +737,9 @@ sudo vim /var/lib/locales/supported.d/local
 locale-gen
 
 
-
+# 音乐文件信息中文显示乱码解决办法
+# sudo apt-get install python-mutagen
+# mid3iconv -e GBK *.mp3    #修正
 
 
 
@@ -752,5 +774,106 @@ do
 EOF
 done
 
+
+
+docker-compose.yml:
+# https://blog.csdn.net/kikajack/article/details/79751026
+env_file    ：可以给docker-compose.yml中的变量用，也可以给容器中的环境变量用，默认文件为./.env，如果使用默认文件，则可以不在docker-compose.yml中明确指定。docker-compose.yml中的变量也可以来自shell的export环境变量，如果shell与.env中的值不一样，则shell中的值优先于.env文件中指定的值。docker-compose config可以显示结果
+environment ：仅给容器中的环境变量用，不能用于docker-compose.yml中的变量。使用environment关键字时，如果不赋值，则会将shell中的环境变量传递给容器
+args        ：是给Dockerfile中的变量的，用于制作镜像，即Dockerfile中的AVG
+变量优先级顺序：environment --> env_file --> Dockerfile(ARG/ENV)
+
+Dockerfile:
+ARG  ：可以设置变量默认值，也可以从docker build参数--build-arg中获取，会覆盖默认值。仅在build时有效，即仅用于生成image
+ENV  ：镜像或容器用的变量，在容器运行时os的env变量，可以设置默认值，也可以在run时添加-e参数获取
+
+
+
+# CMD三种形式：
+CMD ["executable","param1","param2"] (exec形式。会解析为JSON数组，这意味着您必须使用双引号（""）来围绕单词而不是单引号（''）)
+CMD command param1 param2 (shell形式)
+CMD ["param1","param2"] (ENTRYPOINT参数形式)
+例：
+CMD [ "echo", "$HOME" ]   ：不会对变量进行替换$HOME。如果你想要执行变量替换，那么要么使用shell形式(CMD echo $HOME)，要么在exec形式下直接执行shell(CMD [ "sh", "-c", "echo $HOME" ])
+
+
+dockerfile
+https://docs.docker.com/engine/reference/builder/#format
+https://docs.docker.com/compose/compose-file/#depends_on
+
+
+
+# awk
+yyy.xml
+sdf
+  <key>hostname</key>
+  <value>0.0.0.0</key>
+cat yyy.xml | grep -A 1 "hostname" |awk 'match($0, "<value>(.*)</value>", a) {print a[1]}'
+0.0.0.0
+
+
+#
+{}和()的区别在shell是否会衍生子进程
+( CMD )
+{ CMD }
+
+
+# 程序员音乐
+# https://musicforprogramming.net/
+
+
+# vim用法
+i | 光标前插入，并进入insert模式
+a | 光标后插入，并进入insert模式
+I | 航首插入，并进入insert模式
+A | 行尾插入，并进入insert模式
+
+o | 光标下方插入行，并进入insert模式
+O | 光标上方插入行，并进入insert模式
+
+r | 替换字符（一个）
+R | 替换字符（多个）
+
+cw | 替换单词
+c$ | 替换文本到行尾
+
+x | 删除光标下的字符
+X | 删除光标前的字符
+
+s | 删除一个字符，并进入insert模式
+S | 删除整行，并进入insert模式
+
+v        | 选定区域
+Ctrl + v | 随意选定区域
+
+d|y     | （删除/拷贝）选定区域
+(dd|yy) | （删除/拷贝）整行
+(d|y)w  | （删除/拷贝）单词
+(d|y)$  | （删除/拷贝）光标到行尾
+D | 删除光标到行尾
+Y | 整行拷贝
+
+p | 粘贴到光标之后
+P | 粘贴到光标之前
+
+0  | 行首
+$  | 行尾
+w  | 下个单词起始
+nw | 下n个单词起始
+e  | 本单词末尾（与w的区别）
+gg | 文件起始
+G  | 文件末尾
+
+/[char]  | 查找字符，n向下继续查找，N向上继续查找
+#        | 查找当前单词
+%        | 查找配对括号
+u        | 撤销修改
+Ctrl + r | 重做修改
+.        | 重复上次操作，输入字符或命令
+
+:wq/ZZ   | 保存退出
+:q!      | 不保存退出
+:e!      | 丢弃修改并重新打开源文件
+:! [cmd] | 执行外部命令
 
 
