@@ -461,8 +461,9 @@ autojump
 # # 使用代理服务器样例:
 #
 #
-# # apt 使用http代理：
-# export http_proxy=http://192.168.11.10:8118
+# # apt 使用http/https代理：
+# export http_proxy='http://192.168.11.10:8118'
+# export https_proxy='http://192.168.11.10:8118'
 # apt update
 #
 #
@@ -517,8 +518,8 @@ autojump
 #rsync -av ../pg --exclude=.git root@47.52.22.138:~/
 #cp  `ls | grep -v zhidao.txt | xargs`   /test2
 
-
-
+# kvm 远程克隆
+virt-clone  --auto-clone  --connect qemu+ssh://root@192.168.11.202/system  -o v-192-168-11-25-pg  -n pg-t
 
 
 # 查看当前互联网ip及城市
@@ -724,6 +725,9 @@ rsync -av ../pg --exclude=.git root@47.52.22.138:~/
 cp  `ls | grep -v zhidao.txt | xargs`   /test2
 
 
+# 查找[]cmd]所在的包
+yum provides [cmd]
+
 
 # 所有支持的语言编码
 cat /usr/share/i18n/SUPPORTED
@@ -875,5 +879,12 @@ Ctrl + r | 重做修改
 :q!      | 不保存退出
 :e!      | 丢弃修改并重新打开源文件
 :! [cmd] | 执行外部命令
+
+
+# vim markdown
+za                | 打开/关闭当前的折叠
+zm                | 关闭所有折叠
+:set foldlevel=2  | 设置折叠级别，1/2/3/4等，1代表完全折叠
+
 
 
