@@ -884,7 +884,8 @@ Ctrl + r | 重做修改
 # vim markdown
 za                | 打开/关闭当前的折叠
 zm                | 关闭所有折叠
-:set foldlevel=2  | 设置折叠级别，1/2/3/4等，1代表完全折叠
+:set foldlevel=1/2/3/4  | 设置折叠级别，1代表完全折叠
+:set foldmod=syntax     | vim默认会为你将所有代码进行语法折叠，foldlevel= 设置折叠级别
 
 
 
