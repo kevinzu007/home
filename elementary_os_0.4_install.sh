@@ -519,6 +519,22 @@ autojump
 #     -k
 
 
+# Linux curl命令详解
+# https://www.cnblogs.com/duhuo/p/5695256.html
+# 保存cookie信息
+curl -c cookie-c.txt  http://www.linux.com
+# 保存header信息
+curl -D cookie-d.txt http://www.linux.com
+# 用cookie信息访问网站
+curl -b cookie-c.txt http://www.linux.com
+# 模仿浏览器访问
+curl -A "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.0)" http://www.linux.com
+# 伪造referer（盗链）---  服务器其以为你是从www.linux.com点击某个链接过来的
+curl -e "www.linux.com" http://mail.linux.com
+# 显示下载进度条
+curl -# -O http://www.linux.com/dodo1.JPG
+
+
 
 # 拷贝文件
 #rsync -av ../pg --exclude=.git root@47.52.22.138:~/
