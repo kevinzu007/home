@@ -334,6 +334,12 @@ sudo dpkg -i ~/Downloads/nautilus_nutstore_amd64.deb
 sudo apt install -f
 
 
+# remarkable - markdown
+wget https://remarkableapp.github.io/files/remarkable_1.87_all.deb
+sudo dpkg -i remarkable_1.87_all.deb
+sudo apt install -f -y
+
+
 # haroopad - markdown
 curl  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb  \
     -L  -o ~/Downloads/haroopad-v0.13.1-x64.deb  \
@@ -886,6 +892,35 @@ za     | 打开/关闭当前的折叠
 zm     | 关闭所有折叠
 :set foldlevel=1/2/3/4  | 设置折叠级别，1代表完全折叠
 :set foldmod=syntax     | vim默认会为你将所有代码进行语法折叠，foldlevel= 设置折叠级别
+
+
+# Shell printf 命令
+# http://www.runoob.com/linux/linux-shell-printf.html
+printf "%-10s %-8s %-4.2f\n" 郭靖 男 66.1234
+
+
+
+# nvdia显卡驱动安装
+# https://blog.csdn.net/WangJiankun_ls/article/details/82375928
+# 切换到命令行模式
+ctrl+alt+F1
+# 自动或手动写入文件，以关闭nouveau模块
+## 自动：sudo ./NVDIA驱动.run  #--- 这种方式需要先stop X windows，例如：ubuntu下/etc/init.d/lightdm stop
+## 手动：vi /etc/modprobe.d/blacklist-nouveau.conf
+      blacklist nouveau
+      options nouveau modeset=0
+# 更新内核：
+sudo update-initramfs -u
+# 重启
+reboot
+#
+# 切换到命令行模式
+ctrl+alt+F1
+# 关闭x windows
+/etc/init.d/  lightdm stop
+# 安装
+sudo ./NVDIA驱动.run
+
 
 
 
