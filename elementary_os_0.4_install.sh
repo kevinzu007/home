@@ -938,5 +938,9 @@ ctrl+alt+F1
 sudo ./NVDIA驱动.run
 
 
+# ansiable
+# https://www.jianshu.com/p/98e999287120
+# https://blog.csdn.net/fcxjluo/article/details/79992043
+
 
 
