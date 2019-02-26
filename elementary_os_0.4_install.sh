@@ -43,7 +43,8 @@ proxychains4 curl  ip.sb    # test
 # privoxy --- socks5 to http proxy : 8118
 sudo apt install -y  privoxy
 # sudo vim /etc/privoxy/config
-#forward-socks5    /                127.0.0.1:1080
+#listen-address  0.0.0.0:8118
+#forward-socks5    /                127.0.0.1:1080  .
 #forward           .zjlh.lan        .
 #forward           192.168.*.*/     .
 #forward           127.*.*.*/       .
@@ -115,6 +116,7 @@ sudo apt install -y  steam
 sudo apt install -y  pwgen
 sudo apt install -y sox libsox-fmt-all   #命令行音乐播放器
 sudo apt install -y audacious    #音乐播放器，支持音乐信息中的gbk中文（设置自动检测中文，os需安装gbk支持）
+sudo apt install -y clementine   #音乐播放器
 
 
 #win+ubuntu:
@@ -385,6 +387,10 @@ wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb  -P ~/D
 sudo dpkg -i ~/Downloads/teamviewer_amd64.deb
 sudo apt install -f -y
 
+# ossfs
+#  https://help.aliyun.com/document_detail/32196.html?spm=a2c4g.11174283.3.8.2b0e7da2sFT3oF
+wget  http://gosspublic.alicdn.com/ossfs/ossfs_1.80.5_ubuntu16.04_amd64.deb?spm=a2c4g.11186623.2.11.65077358JWBWV6&file=ossfs_1.80.5_ubuntu16.04_amd64.deb
+sudo dpkg -i  ossfs_1.80.5_ubuntu16.04_amd64.deb
 
 
 # 手动下载
@@ -768,6 +774,21 @@ locale-gen
 # mid3iconv -e GBK *.mp3    #修正
 
 
+# htpasswd
+# echo 123456 | htpasswd -i -c ./pass.db adm
+# printf "adm:$(openssl passwd -crypt 12345678)" > ./pass.db
+# 内部其实用的是openssl crypt方法加密，openssl passwd --help
+# 密码最长8位，超出部分无效
+# 密码相同值不同，因为会自动随机加盐（salt），也可以指定盐，在加密结果中前两位就是所加的盐（salt），位数如果超过两位则只有前两位有效
+$ openssl passwd -crypt -salt 12 12345678
+12yJ.Of/NQ.Pk
+$ openssl passwd -crypt -salt 123 12345678
+12yJ.Of/NQ.Pk
+$ openssl passwd -crypt -salt 12 1234567890
+Warning: truncating password to 8 characters
+12yJ.Of/NQ.Pk
+
+
 
 
 # oracle备份
@@ -914,6 +935,12 @@ zm     | 关闭所有折叠
 # http://www.runoob.com/linux/linux-shell-printf.html
 printf "%-10s %-8s %-4.2f\n" 郭靖 男 66.1234
 
+# 文件中的%unicode转换为汉字
+# 源文件：file:///shouji/music-all/%E7%BE%8E%E7%BE%8E%E5%93%92_%E9%97%A8%E4%B8%BD.mp3
+# 先转换为：file:///shouji/music-all/\xE7\xBE\x8E\xE7\xBE\x8E\xE5\x93\x92_\xE9\x97\xA8\xE4\xB8\xBD.mp3
+# 再echo成汉字
+cat 1.m3u | sed  's/\\/\\\\/g;s/\(%\)\([0-9a-fA-F][0-9a-fA-F]\)/\\x\2/g' > 11.m3u
+echo -e "`cat 11.m3u`" > 11.m3u
 
 
 # nvdia显卡驱动安装

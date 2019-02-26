@@ -3,7 +3,7 @@ Name=OSS Browser
 Comment=Aliyun OSS Browser 
 Type=Application
 Categories=Office;
-Exec=/opt/oss-browser-linux-x64/oss-browser %F
-Icon=/opt/lilydict/lily_72px.png
+Exec=/home/kevin/.opt/oss-browser-linux-x64/oss-browser %F
+Icon=/home/kevin/.opt/oss-browser-linux-x64/resources/custom/icon.png
 Terminal=false
 
