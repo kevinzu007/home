@@ -97,6 +97,8 @@ sudo apt install -y  mysql-workbench
 sudo apt install -y  sqlitebrowser
 sudo apt install -y  redis-tools
 sudo apt install -y  com.github.luizaugustomm.tomato
+sudo apt install -y  httpd-tools
+sudo apt install -y  apache2-utils
 
 
 sudo apt install -y  tlp
@@ -117,6 +119,7 @@ sudo apt install -y  pwgen
 sudo apt install -y sox libsox-fmt-all   #命令行音乐播放器
 sudo apt install -y audacious    #音乐播放器，支持音乐信息中的gbk中文（设置自动检测中文，os需安装gbk支持）
 sudo apt install -y clementine   #音乐播放器
+sudo apt install -y qalculate    #超强计算器gui+cli
 
 
 #win+ubuntu:
@@ -863,6 +866,10 @@ cat yyy.xml | grep -A 1 "hostname" |awk 'match($0, "<value>(.*)</value>", a) {pr
 {}和()的区别在shell是否会衍生子进程
 ( CMD )
 { CMD }
+
+# 错误：
+# Gtk-Message: Failed to load module "pantheon-filechooser-module"
+# 参考：https://www.cnblogs.com/cshunter/p/9175212.html
 
 
 # 程序员音乐
