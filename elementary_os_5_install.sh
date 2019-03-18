@@ -853,13 +853,6 @@ https://docs.docker.com/engine/reference/builder/#format
 https://docs.docker.com/compose/compose-file/#depends_on
 
 
-# SHELL字符串处理技巧（${}、##、%%）
-# https://www.cnblogs.com/jeffkuang/articles/3715397.html
-${#VALUE}：计算VALUE字符串的字符数量。
-${VALUE%.*}或${VALUE%%.*}：删除VALUE字符串中以分隔符“.”匹配的右边字符，保留左边字符。
-${VALUE#*.}或${VALUE##*.}：删除VALUE字符串中以分隔符“.”匹配的左边字符，保留右边字符。
-${VALUE/OLD/NEW}或${VALUE//OLD/NEW}：用NEW子串替换VALUE字符串中匹配的OLD子串。
-...
 
 # awk
 yyy.xml
@@ -868,25 +861,6 @@ sdf
   <value>0.0.0.0</key>
 cat yyy.xml | grep -A 1 "hostname" |awk 'match($0, "<value>(.*)</value>", a) {print a[1]}'
 0.0.0.0
-
-# awk 参考
-# https://www.cnblogs.com/emanlee/p/3327576.html
-# aliyun DNS 格式化
-# cc={aaa:{bbb:[{1,2,3},{a,b,c},{z,x,c}]}}
-# cc=`echo ${cc#*[}`
-# cc=`echo ${cc%]*}`
-# cc=`echo ${cc:1:-1}`
-# echo $cc | awk  'BEGIN {FS="},{"} { for(i=1;i<=NF;i++) {print $i} }' | awk 'BEGIN {FS=","; OFS=" "} { for(j=1;j<=NF;j++) {print $j} }'
-1
-2
-3
-a
-b
-c
-z
-x
-c
-
 
 
 #
