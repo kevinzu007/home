@@ -56,6 +56,7 @@ sudo apt install -y  ntpdate
 sudo apt install -y  openssh-server
 sudo apt install -y  nfs-kernel-server
 sudo apt install -y  smbclient cifs-utils
+sudo apt install -y  libpam-google-authenticator    #--- google身份验证器
 
 sudo apt install -y  ntfs-3g
 sudo apt install -y  exfat-fuse
@@ -454,6 +455,18 @@ sudo  ~/.opt/xmind/setup.sh
 # ------------------------
 # source install
 
+# OSD Lyrics歌词外挂
+# 安装在应用程序中
+sudo apt install -y libappindicator-dev  libdbus-glib-1-dev
+cd /usr/local/src/
+sudo git clone  https://github.com/osdlyrics/osdlyrics.git
+cd osdlyrics/
+sudo apt install -y libnotify-dev
+sudo ./autogen.sh
+sudo ./configure --enable-appindicator=yes
+sudo make
+sudo make install
+
 # remote-tail
 git clone   https://github.com/mylxsw/remote-tail.git
 wget  https://github.com/mylxsw/remote-tail/releases/download/v0.1.1/remote-tail-linux  -P ./remote-tail
@@ -573,7 +586,7 @@ curl ip.sb
 
 # mutt
 sudo apt install -y  mutt
-sudo apt autoremove  postfix
+换行符^Msudo apt autoremove  postfix
 sudo apt install -y  w3m feh abook
 
 
@@ -887,6 +900,9 @@ z
 x
 c
 
+# awk输出第三列,忽略空字符（并去掉前后的空格）
+awk 'BEGIN {FS="|"} {if ($3 !~ /^ *$/) {sub(/^[[:blank:]]*/,"",$3); sub(/[[:blank:]]*$/,"",$3); printf "%2d %5s  %s\n",NR,$2,$3}}'  project.list
+等同：awk 'BEGIN {FS="|"} {if ($3 !~ /^[[:blank:]]*$/ && $3 !~ /^$/) {sub(/^[[:blank:]]*/,"",$3); sub(/[[:blank:]]*$/,"",$3); printf "%2d %5s  %s\n",NR,$2,$3}}'  project.list
 
 
 #
@@ -977,6 +993,27 @@ cat 1.m3u | sed  's/\\/\\\\/g;s/\(%\)\([0-9a-fA-F][0-9a-fA-F]\)/\\x\2/g' > 11.m3
 echo -e "`cat 11.m3u`" > 11.m3u
 
 
+# vim无权限保存
+：w !sudo tee %
+
+# 转换windows下制作的文件(换行符^M)
+cat -v a.txt     #--- 查看是否有windows格式的换行符^M
+dos2unix a.txt   #--- 转换
+用vim也行： vim打开/etc/strongswan/ipsec.conf 然后ESC后使用 :set ff=unix ，最后保存退出
+
+
+# 下载迅雷链接：
+------------------------------------
+迅雷下载协议是经过加密的(只在在ed2k地址前后分别加了AA和ZZ而已)，如：
+thunder://QUFlZDJrOi8vfGZpbGV8JUU4JUExJThDJUU1JUIwJUI4JUU4JUI1JUIwJUU4JTgyJTg5LlRoZS5XYWxraW5nLkRlYWQuUzA2RTAxLiVFNCVCOCVBRCVFOCU4QiVCMSVFNSVBRCU5NyVFNSVCOSU5NS5IRFRWcmlwLjEwMjR4NTc2Lm1wNHw2NDg3NTg1MDl8ZjIyZmI2OTRjMDQ0ZmYyNjU0MjhhNTEzNWVhYzhiOTB8aD12eXFsNHFjNHpmYmx0eWNqdW1rcnNibDJza2JscTJsZnwvWlo=
+直接在Linux下面是没有办法下载的。
+在终端下用echo url | base64 -d 来解密，并显示地址，如（URL去掉头和尾）：
+echo QUFlZDJrOi8vfGZpbGV8JUU4JUExJThDJUU1JUIwJUI4JUU4JUI1JUIwJUU4JTgyJTg5LlRoZS5XYWxraW5nLkRlYWQuUzA2RTAxLiVFNCVCOCVBRCVFOCU4QiVCMSVFNSVBRCU5NyVFNSVCOSU5NS5IRFRWcmlwLjEwMjR4NTc2Lm1wNHw2NDg3NTg1MDl8ZjIyZmI2OTRjMDQ0ZmYyNjU0MjhhNTEzNWVhYzhiOTB8aD12eXFsNHFjNHpmYmx0eWNqdW1rcnNibDJza2JscTJsZnwvWlo= | base64 -d
+显示结果是：AAed2k://|file|%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89.The.Walking.Dead.S06E01.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024x576.mp4|648758509|f22fb694c044ff265428a5135eac8b90|h=vyql4qc4zfbltycjumkrsbl2skblq2lf|/ZZ
+所以解密后的地址是：ed2k://|file|%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89.The.Walking.Dead.S06E01.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024x576.mp4|648758509|f22fb694c044ff265428a5135eac8b90|h=vyql4qc4zfbltycjumkrsbl2skblq2lf|/
+
+
+
 # nvdia显卡驱动安装
 # https://blog.csdn.net/WangJiankun_ls/article/details/82375928
 # 切换到命令行模式
@@ -1032,6 +1069,9 @@ ssl_trusted_certificate /pemcrt/fullchain.pem;
 add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 
 
+# https://2ton.com.au/Products/
+
+
 # ansiable
 # https://www.jianshu.com/p/98e999287120
 # https://blog.csdn.net/fcxjluo/article/details/79992043
@@ -1050,6 +1090,7 @@ add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 
 # 使用 promethues 和 grafana 监控自己的 linux 机器
 # http://cizixs.com/2018/01/24/use-prometheus-and-grafana-to-monitor-linux-machine/
+
 
 
 
