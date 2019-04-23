@@ -65,6 +65,7 @@ sudo apt install -y  unzip
 sudo apt install -y  p7zip  p7zip-rar
 sudo apt install -y  rar  unrar
 
+sudo apt install -y  httpie     #--- http GET POST，可替代curl、wget
 sudo apt install -y  aria2
 sudo apt install -y  axel       #--- 多路http下载加速
 sudo apt install -y  rtorrent   #--- 命令行torrent客户端
