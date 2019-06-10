@@ -336,6 +336,12 @@ sudo apt install -y  telegram
 # -----------------------
 # deb
 
+# weixin
+# https://github.com/trazyn/weweChat/releases
+wget -P ~/Downloads/ https://github.com/trazyn/weweChat/releases/download/v1.1.7/wewechat-1.1.7-linux-amd64.deb
+sudo dpkg -i ~/Downloads/wewechat-1.1.7-linux-amd64.deb
+
+
 # jiangguoyun
 wget -P ~/Downloads/ https://www.jianguoyun.com/static/exe/installer/ubuntu/nautilus_nutstore_amd64.deb
 sudo dpkg -i ~/Downloads/nautilus_nutstore_amd64.deb
