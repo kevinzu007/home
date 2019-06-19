@@ -3,42 +3,22 @@
 # elementary_install:
 # ------------------------
 # add-apt-repository: command not found
-sudo apt install -y  software-properties-common python-software-properties  apt-transport-https  ca-certificates
+sudo apt install -y  software-properties-common  apt-transport-https  ca-certificates
 
 sudo apt install -y  python3-dev python3-pip
 pip3 install --upgrade pip
 
-sudo apt install -y  vim
-sudo apt install -y  git
+sudo apt install -y  tmux vim  git git-lfs
 sudo apt install -y  snapd
 
 
-## ss : 1080
-# https://github.com/shadowsocks/shadowsocks-libev#install-from-repository
-sudo apt-get install software-properties-common -y
-sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev -y
-sudo apt-get update
-sudo apt install shadowsocks-libev
-sudo systemctl enable  shadowsocks-libev-local@hk           #--- @hk 是service的参数"%i"
-#Created symlink from /etc/systemd/system/multi-user.target.wants/shadowsocks-libev-local@hk.service to /lib/systemd/system/shadowsocks-libev-local@.service.
-sudo cp /etc/shadowsocks-libev/config.json /etc/shadowsocks-libev/hk.json    #--- 文件名对应上面的@参数；修改里面的参数
-sudo systemctl start   shadowsocks-libev-local@hk.service
-
-
-# proxychains-ng
-git clone  https://github.com/rofl0r/proxychains-ng.git  ~/Downloads/proxychains-ng
-cd  ~/Downloads/proxychains-ng
-./configure
-make
-sudo make install
-sudo make install-config
-cd -
-# modify: '/usr/local/etc/proxychains.conf'
-# round_robin_chain
-# socks5  192.168.11.10  1080
-# socks5  127.0.0.1      1080
-proxychains4 curl  ip.sb    # test
-
+## ss-l
+sudo apt install -y  shadowsocks-libev rng-tools
+# vim /etc/shadowsocks-libev/hk.json
+systemctl stop    shadowsocks-libev.service
+systemctl disable shadowsocks-libev.service
+systemctl enable  shadowsocks-libev-local@hk.service
+systemctl start   shadowsocks-libev-local@hk.service
 
 # privoxy --- socks5 to http proxy : 8118
 sudo apt install -y  privoxy
@@ -49,7 +29,13 @@ sudo apt install -y  privoxy
 #forward           192.168.*.*/     .
 #forward           127.*.*.*/       .
 #forward           localhost/       .
+systemctl start  privoxy.service
 
+# proxychains
+sudo apt install -y  proxychains4
+# vim /etc/proxychains4.conf
+# socks5  127.0.0.1      1080
+proxychains4 curl  ip.sb    # test
 
 
 sudo apt install -y  ntpdate
@@ -88,21 +74,18 @@ mkdir  ~/.fonts
 
 
 sudo apt install -y  catfish
-sudo apt install -y  tmux
 sudo apt install -y  tree
 sudo apt install -y  lnav
 sudo apt install -y  remmina remmina-plugin-rdp  remmina-plugin-vnc
-sudo apt install -y  gparted
+sudo apt install -y  gparted gpart
 sudo apt install -y  mysql-workbench
 sudo apt install -y  sqlitebrowser
 sudo apt install -y  redis-tools
-sudo apt install -y  com.github.luizaugustomm.tomato
-sudo apt install -y  httpd-tools
 sudo apt install -y  apache2-utils
 
 
 sudo apt install -y  tlp
-sudo apt install -y  libreoffice  libreoffice-l10n-zh-cn
+#sudo apt install -y  libreoffice  libreoffice-l10n-zh-cn
 sudo apt install -y  inkscape
 sudo apt install -y  dia
 sudo apt install -y  gimp
@@ -110,8 +93,6 @@ sudo apt install -y  planner
 sudo apt install -y  filezilla
 #sudo apt install -y  fcitx  fcitx-googlepinyin
 sudo apt install -y  moc  moc-ffmpeg-plugin
-#sudo apt install -y  pidgin
-sudo apt install -y  iptux
 sudo apt install -y  chromium-browser
 sudo apt install -y  firefox  #firefox-locale-zh-hans
 sudo apt install -y  steam
@@ -133,10 +114,6 @@ sudo ntpdate  cn.ntp.org.cn
 sudo add-apt-repository -y -u  ppa:tsbarnes/indicator-keylock
 sudo apt install -y  indicator-keylock
 
-# 触摸板
-sudo add-apt-repository -y -u  ppa:atareao/atareao
-sudo apt install -y  touchpad-indicator
-
 
 # ansible
 sudo apt-add-repository -y -u  ppa:ansible/ansible
@@ -148,14 +125,6 @@ sudo apt install -y  ansible
 #sudo apt-get update
 #sudo apt-get install network-manager-l2tp-gnome
 
-# git lfs
-# https://git-lfs.github.com/
-# look readme
-# https://cloud.tencent.com/developer/article/1010589
-sudo curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
-sudo apt-get install git-lfs
-git lfs install
-
 
 # gitbook
 # https://github.com/GitbookIO/gitbook/blob/master/docs/setup.md
@@ -163,20 +132,14 @@ git lfs install
 
 
 # NaSC
-sudo apt-add-repository -y -u  ppa:nasc-team/daily
-sudo apt  install -y  nasc
+sudo apt  install -y  com.github.parnold-x.nasc
 
 
 # uGet
-sudo add-apt-repository -y -u  ppa:plushuang-tw/uget-stable
 sudo apt install -y  uget
 
 # deluge
-sudo add-apt-repository -y -u  ppa:deluge-team/ppa
 sudo apt install -y  deluge
-
-# mldonkey
-sudo apt install -y  mldonkey-server  mldonkey-gui   # or  kmldonkey
 
 
 # tweaks配置工具
@@ -185,10 +148,12 @@ sudo apt install -y  elementary-tweaks
 
 
 # virtualbox
+echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bionic contrib"  > /etc/apt/sources.list.d/virtualbox.list
+sudo apt-key add oracle_vbox_2016.asc
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-echo "deb http://download.virtualbox.org/virtualbox/debian xenial contrib" | sudo tee  /etc/apt/sources.list.d/virtualbox.list
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 sudo apt update
-sudo apt install virtualbox-5.2
+sudo apt install virtualbox-6.0
 
 
 # chrome
@@ -199,10 +164,7 @@ sudo apt install -y  google-chrome-stable
 
 
 # asciinema终端录屏
-# https://asciinema.org/docs/installation#installing-on-linux
-sudo apt-add-repository ppa:zanchey/asciinema
-sudo apt-get update
-sudo apt-get install asciinema
+sudo apt install -y  asciinema
 ## 用法：
 ## 录制到文件：asciinema rec <TO_filename.cast>
 ## 录制到官网：asciinema play
@@ -225,26 +187,15 @@ sudo apt-get install asciinema
 
 
 # 命令自动修正thefuck（fuck）
-# https://github.com/nvbn/thefuck#manual-installation
-#sudo apt install -y  python3-dev python3-pip
-#pip3 install --upgrade pip
-#pip3 install --user thefuck
-# put 'eval $(thefuck --alias)' into ~/.bash_aliases
 sudo apt install -y  thefuck
 
 
 # pg client & pgadmin
 # https://www.postgresql.org/download/linux/ubuntu/
-echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
-  sudo apt-key add -
-sudo apt-get update
+echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list    #--- bionic是ubuntu18.04的版本号，自行替换
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt update
 sudo apt install -y  pgadmin4 postgresql-client    #--- 不加版本号，代表最新版，下同
-# /usr/lib/postgresql/9.6/bin/initdb -D /var/lib/postgresql/9.6/main --auth-local peer --auth-host md5
-# Success. You can now start the database server using:
-#     /usr/lib/postgresql/9.6/bin/pg_ctl -D /var/lib/postgresql/9.6/main -l logfile start
-# Ver Cluster Port Status Owner    Data directory               Log file
-# 9.6 main    5432 down   postgres /var/lib/postgresql/9.6/main /var/log/postgresql/postgresql-9.6-main.log
 
 
 # pgcli --- 自动命令提示
@@ -255,60 +206,26 @@ sudo pip3 install pgcli
 
 # docker-ce
 # https://docs.docker.com/install/linux/docker-ce/ubuntu/#set-up-the-repository
-sudo apt remove  docker docker-engine docker.io
+sudo apt install -y  apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable" | sudo tee /etc/apt/sources.list.d/docker-ce.list
+echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/docker-ce.list  #--- bionic是ubuntu18.04的版本代号
 sudo apt update
 sudo apt install -y  docker-ce
 
 
-# handbrakehi视频转码，含ong播放器n用dvd解码包，替代w32ocdes
+# handbrake视频转码，含ong播放器n用dvd解码包，替代w32ocdes
 sudo add-apt-repository -y -u  ppa:stebbins/handbrake-releases
 sudo apt install -y  handbrake-gtk  handbrake-cli
 
 
 # wireshark
-sudo add-apt-repository -y -u  ppa:wireshark-dev/stable
 sudo apt install -y  wireshark
 
 
 # wiznote
-sudo add-apt-repository -y -u  ppa:wiznote-team
-sudo apt install -y  wiznote
-
-
-
-# sublime
-sudo add-apt-repository -y -u  ppa:webupd8team/sublime-text-3
-sudo apt install -y  sublime-text
-# 修复在fcitx框架下不能输入中文的问题
-git clone https://github.com/lyfeyaj/sublime-text-imfix.git
-cd sublime-text-imfix
-./sublime-imfix
-
-
-
-# typora - markdown
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
-sudo add-apt-repository 'deb http://typora.io linux/'
-sudo apt update
-sudo apt install -y  typora
-# typora 主题：catfish
-# http://theme.typora.io/theme/Catfish/
-# 支持无衬线字体，衬线字体和等宽字体分别采用思源黑体，思源宋体
-# 运行一次才有这个目录 ~/.config/Typora/themes
-mkdir ~/.config/Typora/themes
-wget  https://github.com/leaf-hsiao/catfish/archive/master.zip  -O ~/.config/Typora/themes/catfish-master.zip
-unzip  ~/.config/Typora/themes/catfish-master.zip  -d ~/.config/Typora/themes
-mv   ~/.config/Typora/themes/catfish-master/*   ~/.config/Typora/themes/
-# select menu [theme]->[catfish]
-
-
-
-# keepassXC -- 替代keepass2 --- 但是google浏览器插件不给力，所以不装了
-#sudo add-apt-repository -y -u  ppa:phoerious/keepassxc
-#sudo apt install -y  keepassxc
-#浏览器插件
+sudo apt install openssl1.0 libssl1.0-dev
+wget https://url.wiz.cn/u/Wizlinux
+chmod +x Wizlinux
 
 
 # keepass2
@@ -341,22 +258,18 @@ sudo apt install -f
 
 
 # remarkable - markdown
-wget https://remarkableapp.github.io/files/remarkable_1.87_all.deb
-sudo dpkg -i remarkable_1.87_all.deb
+wget https://remarkableapp.github.io/files/remarkable_1.87_all.deb -P ~/Downloads/
+sudo dpkg -i ~/Downloads/remarkable_1.87_all.deb
 sudo apt install -f -y
 
 
 # haroopad - markdown
 curl  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb  \
     -L  -o ~/Downloads/haroopad-v0.13.1-x64.deb  \
-    --socks5 192.168.11.10:1080
+    --socks5 127.0.0.1:1080
 sudo dpkg -i  ~/Downloads/haroopad-v0.13.1-x64.deb
 # 使用中，如果不能打开，请删除tmp文件
 #rm  ~/.config/Haroopad/.tmp/*
-
-
-# marktext - markdown
-# https://github.com/marktext/marktext/releases
 
 
 # zoom
@@ -367,22 +280,17 @@ sudo apt install -f
 
 # Rocket.Chat client
 # https://github.com/RocketChat/Rocket.Chat.Electron/releases
-proxychains4  wget  https://github.com/RocketChat/Rocket.Chat.Electron/releases/download/2.10.2/rocketchat_2.10.2_amd64.deb  -O ~/Downloads/rocketchat_amd64.deb
+wget  https://github.com/RocketChat/Rocket.Chat.Electron/releases/download/2.15.3/rocketchat_2.15.3_amd64.deb -O ~/Downloads/rocketchat_amd64.deb
 sudo  dpkg -i  ~/Downloads/rocketchat_amd64.deb
 
 
 # deepin截图
-# http://blog.csdn.net/groundhappy/article/details/54896747
-sudo apt install -y  python-xlib
-wget http://packages.linuxdeepin.com/deepin/pool/main/d/deepin-scrot/deepin-scrot_2.0-0deepin_all.deb  -P ~/Downloads/
-sudo dpkg -i ~/Downloads/deepin-scrot*
-# run "/usr/bin/deepin-scrot  > /dev/null 2>&1"
+sudo apt install -y  deepin-screenshot
+# run "/usr/bin/deepin-screenshot  > /dev/null 2>&1"
 # 添加系统快捷键，例如：Ctrl-Alt-A
 
 
 # file converto pdf...
-#wget -P ~/Downloads/  https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
-#sudo dpkg -i  ~/Downloads/pandoc-1.19.2.1-1-amd64.deb
 sudo apt install -y  pandoc
 
 
@@ -393,8 +301,9 @@ sudo apt install -f -y
 
 # ossfs
 #  https://help.aliyun.com/document_detail/32196.html?spm=a2c4g.11174283.3.8.2b0e7da2sFT3oF
-wget  http://gosspublic.alicdn.com/ossfs/ossfs_1.80.5_ubuntu16.04_amd64.deb?spm=a2c4g.11186623.2.11.65077358JWBWV6&file=ossfs_1.80.5_ubuntu16.04_amd64.deb
-sudo dpkg -i  ossfs_1.80.5_ubuntu16.04_amd64.deb
+curl  -L -o ~/Downloads/ossfs_1.80.6_ubuntu18.04_amd64.deb  http://gosspublic.alicdn.com/ossfs/ossfs_1.80.6_ubuntu18.04_amd64.deb?spm=a2c4g.11186623.2.13.650773580rmnoR&file=ossfs_1.80.6_ubuntu18.04_amd64.deb
+sudo  dpkg -i ~/Downloads/ossfs_1.80.6_ubuntu18.04_amd64.deb
+sudo  apt install -f
 
 
 # 手动下载
@@ -432,10 +341,26 @@ sudo dpkg -i  ossfs_1.80.5_ubuntu16.04_amd64.deb
 
 # sougoupinyin
 # https://pinyin.sogou.com/linux/?r=pinyin
+curl -L -o ~/Downloads/sogoupinyin_2.2.0.0108_amd64.deb  http://cdn2.ime.sogou.com/dl/index/1524572264/sogoupinyin_2.2.0.0108_amd64.deb?st=w9MGCFqBUJc1dgVYPlcEvg&e=1560845968&fn=sogoupinyin_2.2.0.0108_amd64.deb
+sudo apt install fcitx
+sudo dpkg -i ~/Downloads/sogoupinyin_2.2.0.0108_amd64.deb
+sudo apt install -f
 
-# youdaodict
+
+# dict
+sudo apt install -y  goldendict
+#离线词典http://download.huzheng.org/zh_CN/
+mkdir -p ~/.dict
+wget -P ~/Downloads/  http://download.huzheng.org/zh_CN/stardict-langdao-ec-gb-2.4.2.tar.bz2
+wget -P ~/Downloads/  http://download.huzheng.org/zh_CN/stardict-langdao-ce-gb-2.4.2.tar.bz2
+tar  jxf ~/Downloads/stardict-langdao-ec-gb-2.4.2.tar.bz2  -C ~/.dict/
+tar  jxf ~/Downloads/stardict-langdao-ce-gb-2.4.2.tar.bz2  -C ~/.dict/
+
+
 # neteasteMusic
-
+wget -P ~/Downloads/  http://d1.music.126.net/dmusic/netease-cloud-music_1.2.1_amd64_ubuntu_20190428.deb
+sudo dpkg -i ~/Downloads/youdao-dict_1.1.0-0-ubuntu_amd64.deb
+sudo apt install -f
 
 
 # ------------------------
@@ -443,21 +368,15 @@ sudo dpkg -i  ossfs_1.80.5_ubuntu16.04_amd64.deb
 mkdir  ~/.opt
 
 # xMind
-wget  http://xiazai.xmindchina.cn/trail/xmind-8-linux.zip  -O ~/Downloads/xmind-8-linux.zip
-unzip ~/Downloads/xmind-8-linux.zip  -d ~/.opt/xmind/
-sudo  ~/.opt/xmind/setup.sh
-# cp .desktop
-
-
+#wget  http://xiazai.xmindchina.cn/trail/xmind-8-linux.zip  -O ~/Downloads/xmind-8-linux.zip
+#unzip ~/Downloads/xmind-8-linux.zip  -d ~/.opt/xmind/
+#sudo  ~/.opt/xmind/setup.sh
+curl -L -o ~/Downloads/XMind-ZEN-for-Linux-64bit.deb  wget  https://www.xmind.cn/xmind/downloads/XMind-ZEN-for-Linux-64bit.deb
+sudo dpkg -i ~/Downloads/XMind-ZEN-for-Linux-64bit.deb
 
 
 # ------------------------
 # source install
-
-# remote-tail
-git clone   https://github.com/mylxsw/remote-tail.git
-wget  https://github.com/mylxsw/remote-tail/releases/download/v0.1.1/remote-tail-linux  -P ./remote-tail
-sudo  cp ./remote-tail/remote-tail-linux  /usr/local/bin/remote-tail
 
 
 
@@ -951,12 +870,12 @@ cat 1.m3u | sed  's/\\/\\\\/g;s/\(%\)\([0-9a-fA-F][0-9a-fA-F]\)/\\x\2/g' > 11.m3
 echo -e "`cat 11.m3u`" > 11.m3u
 
 
-# nvdia显卡驱动安装
+# nvidia显卡驱动安装
 # https://blog.csdn.net/WangJiankun_ls/article/details/82375928
 # 切换到命令行模式
 ctrl+alt+F1
 # 自动或手动写入文件，以关闭nouveau模块
-## 自动：sudo ./NVDIA驱动.run  #--- 这种方式需要先stop X windows，例如：ubuntu下/etc/init.d/lightdm stop
+## 自动：这种方式需要先stop X windows，例如：ubuntu下/etc/init.d/lightdm stop, sudo ./NVIDIA驱动.run
 ## 手动：vi /etc/modprobe.d/blacklist-nouveau.conf
       blacklist nouveau
       options nouveau modeset=0
@@ -968,9 +887,9 @@ reboot
 # 切换到命令行模式
 ctrl+alt+F1
 # 关闭x windows
-/etc/init.d/  lightdm stop
+/etc/init.d/lightdm stop
 # 安装
-sudo ./NVDIA驱动.run
+sudo ./NVIDIA驱动.run
 
 
 # HTTPS 协议和原理
@@ -1026,6 +945,9 @@ add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 # http://cizixs.com/2018/01/24/use-prometheus-and-grafana-to-monitor-linux-machine/
 
 
+# 换rpm到deb文件
+sudo apt install  alien
+sudo alien gcc3.4-3.4.5-alt17.x86_64.rpm
 
 
 
