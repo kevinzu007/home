@@ -42,6 +42,7 @@ sudo apt install -y  ntpdate
 sudo apt install -y  openssh-server
 sudo apt install -y  nfs-kernel-server
 sudo apt install -y  smbclient cifs-utils
+sudo apt install -y  libpam-google-authenticator    #--- google身份验证器
 
 sudo apt install -y  ntfs-3g
 sudo apt install -y  exfat-fuse
@@ -50,6 +51,7 @@ sudo apt install -y  unzip
 sudo apt install -y  p7zip  p7zip-rar
 sudo apt install -y  rar  unrar
 
+sudo apt install -y  httpie     #--- http GET POST，可替代curl、wget
 sudo apt install -y  aria2
 sudo apt install -y  axel       #--- 多路http下载加速
 sudo apt install -y  rtorrent   #--- 命令行torrent客户端
@@ -377,6 +379,19 @@ sudo dpkg -i ~/Downloads/XMind-ZEN-for-Linux-64bit.deb
 
 # ------------------------
 # source install
+
+## OSD Lyrics歌词外挂
+# 编译出错。。。。。。。
+## 安装在应用程序中
+#sudo apt install -y libappindicator-dev  libdbus-glib-1-dev
+#cd /usr/local/src/
+#sudo git clone  https://github.com/osdlyrics/osdlyrics.git
+#cd osdlyrics/
+#sudo apt install -y libnotify-dev
+#sudo ./autogen.sh
+#sudo ./configure --enable-appindicator=yes
+#sudo make
+#sudo make install
 
 
 
@@ -772,6 +787,13 @@ https://docs.docker.com/engine/reference/builder/#format
 https://docs.docker.com/compose/compose-file/#depends_on
 
 
+# SHELL字符串处理技巧（${}、##、%%）
+# https://www.cnblogs.com/jeffkuang/articles/3715397.html
+${#VALUE}：计算VALUE字符串的字符数量。
+${VALUE%.*}或${VALUE%%.*}：删除VALUE字符串中以分隔符“.”匹配的右边字符，保留左边字符。
+${VALUE#*.}或${VALUE##*.}：删除VALUE字符串中以分隔符“.”匹配的左边字符，保留右边字符。
+${VALUE/OLD/NEW}或${VALUE//OLD/NEW}：用NEW子串替换VALUE字符串中匹配的OLD子串。
+...
 
 # awk
 yyy.xml
@@ -780,6 +802,28 @@ sdf
   <value>0.0.0.0</key>
 cat yyy.xml | grep -A 1 "hostname" |awk 'match($0, "<value>(.*)</value>", a) {print a[1]}'
 0.0.0.0
+
+# awk 参考
+# https://www.cnblogs.com/emanlee/p/3327576.html
+# aliyun DNS 格式化
+# cc={aaa:{bbb:[{1,2,3},{a,b,c},{z,x,c}]}}
+# cc=`echo ${cc#*[}`
+# cc=`echo ${cc%]*}`
+# cc=`echo ${cc:1:-1}`
+# echo $cc | awk  'BEGIN {FS="},{"} { for(i=1;i<=NF;i++) {print $i} }' | awk 'BEGIN {FS=","; OFS=" "} { for(j=1;j<=NF;j++) {print $j} }'
+1
+2
+3
+a
+b
+c
+z
+x
+c
+
+# awk输出第三列,忽略空字符（并去掉前后的空格）
+awk 'BEGIN {FS="|"} {if ($3 !~ /^ *$/) {sub(/^[[:blank:]]*/,"",$3); sub(/[[:blank:]]*$/,"",$3); printf "%2d %5s  %s\n",NR,$2,$3}}'  project.list
+等同：awk 'BEGIN {FS="|"} {if ($3 !~ /^[[:blank:]]*$/ && $3 !~ /^$/) {sub(/^[[:blank:]]*/,"",$3); sub(/[[:blank:]]*$/,"",$3); printf "%2d %5s  %s\n",NR,$2,$3}}'  project.list
 
 
 #
@@ -870,12 +914,32 @@ cat 1.m3u | sed  's/\\/\\\\/g;s/\(%\)\([0-9a-fA-F][0-9a-fA-F]\)/\\x\2/g' > 11.m3
 echo -e "`cat 11.m3u`" > 11.m3u
 
 
+# vim无权限保存
+：w !sudo tee %
+
+# 转换windows下制作的文件(换行符^M)
+cat -v a.txt     #--- 查看是否有windows格式的换行符^M
+dos2unix a.txt   #--- 转换
+用vim也行： vim打开/etc/strongswan/ipsec.conf 然后ESC后使用 :set ff=unix ，最后保存退出
+
+
+# 下载迅雷链接：
+------------------------------------
+迅雷下载协议是经过加密的(只在在ed2k地址前后分别加了AA和ZZ而已)，如：
+thunder://QUFlZDJrOi8vfGZpbGV8JUU4JUExJThDJUU1JUIwJUI4JUU4JUI1JUIwJUU4JTgyJTg5LlRoZS5XYWxraW5nLkRlYWQuUzA2RTAxLiVFNCVCOCVBRCVFOCU4QiVCMSVFNSVBRCU5NyVFNSVCOSU5NS5IRFRWcmlwLjEwMjR4NTc2Lm1wNHw2NDg3NTg1MDl8ZjIyZmI2OTRjMDQ0ZmYyNjU0MjhhNTEzNWVhYzhiOTB8aD12eXFsNHFjNHpmYmx0eWNqdW1rcnNibDJza2JscTJsZnwvWlo=
+直接在Linux下面是没有办法下载的。
+在终端下用echo url | base64 -d 来解密，并显示地址，如（URL去掉头和尾）：
+echo QUFlZDJrOi8vfGZpbGV8JUU4JUExJThDJUU1JUIwJUI4JUU4JUI1JUIwJUU4JTgyJTg5LlRoZS5XYWxraW5nLkRlYWQuUzA2RTAxLiVFNCVCOCVBRCVFOCU4QiVCMSVFNSVBRCU5NyVFNSVCOSU5NS5IRFRWcmlwLjEwMjR4NTc2Lm1wNHw2NDg3NTg1MDl8ZjIyZmI2OTRjMDQ0ZmYyNjU0MjhhNTEzNWVhYzhiOTB8aD12eXFsNHFjNHpmYmx0eWNqdW1rcnNibDJza2JscTJsZnwvWlo= | base64 -d
+显示结果是：AAed2k://|file|%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89.The.Walking.Dead.S06E01.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024x576.mp4|648758509|f22fb694c044ff265428a5135eac8b90|h=vyql4qc4zfbltycjumkrsbl2skblq2lf|/ZZ
+所以解密后的地址是：ed2k://|file|%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89.The.Walking.Dead.S06E01.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024x576.mp4|648758509|f22fb694c044ff265428a5135eac8b90|h=vyql4qc4zfbltycjumkrsbl2skblq2lf|/
+
+
 # nvidia显卡驱动安装
 # https://blog.csdn.net/WangJiankun_ls/article/details/82375928
 # 切换到命令行模式
 ctrl+alt+F1
 # 自动或手动写入文件，以关闭nouveau模块
-## 自动：这种方式需要先stop X windows，例如：ubuntu下/etc/init.d/lightdm stop, sudo ./NVIDIA驱动.run
+## 自动：这种方式需要先stop X windows，例如：ubuntu下/etc/init.d/lightdm stop; sudo ./NVIDIA驱动.run
 ## 手动：vi /etc/modprobe.d/blacklist-nouveau.conf
       blacklist nouveau
       options nouveau modeset=0
@@ -923,6 +987,9 @@ ssl_stapling_verify on;
 ssl_trusted_certificate /pemcrt/fullchain.pem;
 # HSTS
 add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+
+
+# https://2ton.com.au/Products/
 
 
 # ansiable
