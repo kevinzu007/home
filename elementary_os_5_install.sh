@@ -380,18 +380,16 @@ sudo dpkg -i ~/Downloads/XMind-ZEN-for-Linux-64bit.deb
 # ------------------------
 # source install
 
-## OSD Lyrics歌词外挂
-# 编译出错。。。。。。。
-## 安装在应用程序中
-#sudo apt install -y libappindicator-dev  libdbus-glib-1-dev
-#cd /usr/local/src/
-#sudo git clone  https://github.com/osdlyrics/osdlyrics.git
-#cd osdlyrics/
-#sudo apt install -y libnotify-dev
-#sudo ./autogen.sh
-#sudo ./configure --enable-appindicator=yes
-#sudo make
-#sudo make install
+# OSD Lyrics歌词外挂
+# 安装在应用程序中
+sudo apt install -y intltool libappindicator-dev  libdbus-glib-1-dev
+cd /usr/local/src/
+sudo git clone  https://github.com/osdlyrics/osdlyrics.git
+cd osdlyrics/
+sudo ./autogen.sh
+sudo ./configure --enable-appindicator=yes
+sudo make
+sudo make install
 
 
 
@@ -894,6 +892,8 @@ Ctrl + r | 重做修改
 :e!      | 丢弃修改并重新打开源文件
 :! [cmd] | 执行外部命令
 
+# vim无权限保存
+：w !sudo tee %
 
 # vim markdown
 za     | 打开/关闭当前的折叠
@@ -913,9 +913,6 @@ printf "%-10s %-8s %-4.2f\n" 郭靖 男 66.1234
 cat 1.m3u | sed  's/\\/\\\\/g;s/\(%\)\([0-9a-fA-F][0-9a-fA-F]\)/\\x\2/g' > 11.m3u
 echo -e "`cat 11.m3u`" > 11.m3u
 
-
-# vim无权限保存
-：w !sudo tee %
 
 # 转换windows下制作的文件(换行符^M)
 cat -v a.txt     #--- 查看是否有windows格式的换行符^M
