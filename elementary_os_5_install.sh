@@ -11,6 +11,32 @@ pip3 install --upgrade pip
 sudo apt install -y  tmux vim  git git-lfs
 sudo apt install -y  snapd
 
+# 好玩
+# 名言fortune
+sudo apt install -y  fortune  fortune-zh
+#fortune
+# 用ASCII字符打印牛，羊等动物
+sudo apt install -y  cowsay
+#cowsay "ffffff"
+#cowsay -l 查看其它动物的名字，然后 -f 跟上动物名，如
+#cowsay -f tux "坑爹啊"
+#fortune | cowsay
+# 艺术字生成器，由ASCII字符组成
+sudo apt install -y  figlet toilet
+#figlet fffff
+#toilet fffffff
+#toilet -F gay ffffff
+#toilet -F gay -f mono12 fffffff
+# ASCII艺术框
+sudo apt install -y  boxes lolcat
+#fortune | boxes -d cat
+#fortune | boxes -d cat | lolcat    #--- 上色
+# 桌面上出现一直喵星人，跟着你的鼠标跑
+sudo apt install -y  oneko
+#oneko &
+# cal打印日历
+#cal 8 2019
+
 
 ## ss-l
 sudo apt install -y  shadowsocks-libev rng-tools
