@@ -8,12 +8,12 @@ sudo apt install -y  software-properties-common  apt-transport-https  ca-certifi
 sudo apt install -y  python3-dev python3-pip
 pip3 install --upgrade pip
 
-sudo apt install -y  tmux vim  git git-lfs
+sudo apt install -y  tmux vim  git git-lfs openssh-server
 sudo apt install -y  snapd
 
 # 好玩
 # 名言fortune
-sudo apt install -y  fortune  fortune-zh
+sudo apt install -y  fortune-mod  fortune-zh
 #fortune
 # 用ASCII字符打印牛，羊等动物
 sudo apt install -y  cowsay
@@ -40,11 +40,11 @@ sudo apt install -y  oneko
 
 ## ss-l
 sudo apt install -y  shadowsocks-libev rng-tools
-# vim /etc/shadowsocks-libev/hk.json
-systemctl stop    shadowsocks-libev.service
-systemctl disable shadowsocks-libev.service
-systemctl enable  shadowsocks-libev-local@hk.service
-systemctl start   shadowsocks-libev-local@hk.service
+# sudo  vim /etc/shadowsocks-libev/hk.json
+sudo  systemctl stop    shadowsocks-libev.service
+sudo  systemctl disable shadowsocks-libev.service
+sudo  systemctl enable  shadowsocks-libev-local@hk.service
+sudo  systemctl start   shadowsocks-libev-local@hk.service
 
 # privoxy --- socks5 to http proxy : 8118
 sudo apt install -y  privoxy
@@ -59,13 +59,12 @@ systemctl start  privoxy.service
 
 # proxychains
 sudo apt install -y  proxychains4
-# vim /etc/proxychains4.conf
+# sudo  vim /etc/proxychains4.conf
 # socks5  127.0.0.1      1080
 proxychains4 curl  ip.sb    # test
 
 
 sudo apt install -y  ntpdate
-sudo apt install -y  openssh-server
 sudo apt install -y  nfs-kernel-server
 sudo apt install -y  smbclient cifs-utils
 sudo apt install -y  libpam-google-authenticator    #--- google身份验证器
@@ -95,7 +94,6 @@ sudo apt install -y  nmap zenmap
 
 
 # font
-sudo apt install -y  ttf-wqy-*
 sudo apt install -y  fonts-wqy-*
 sudo apt install -y  xfonts-wqy
 mkdir  ~/.fonts
@@ -176,12 +174,11 @@ sudo apt install -y  elementary-tweaks
 
 
 # virtualbox
-echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bionic contrib"  > /etc/apt/sources.list.d/virtualbox.list
-sudo apt-key add oracle_vbox_2016.asc
+echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bionic contrib" | sudo tee  /etc/apt/sources.list.d/virtualbox.list
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 sudo apt update
-sudo apt install virtualbox-6.0
+sudo apt install -y  virtualbox-6.0
 
 
 # chrome
@@ -282,7 +279,7 @@ sudo apt install -y  telegram
 # jiangguoyun
 wget -P ~/Downloads/ https://www.jianguoyun.com/static/exe/installer/ubuntu/nautilus_nutstore_amd64.deb
 sudo dpkg -i ~/Downloads/nautilus_nutstore_amd64.deb
-sudo apt install -f
+sudo apt install -f -y
 
 
 # remarkable - markdown
@@ -303,12 +300,14 @@ sudo dpkg -i  ~/Downloads/haroopad-v0.13.1-x64.deb
 # zoom
 wget  https://www.zoom.us/client/latest/zoom_amd64.deb  -P ~/Downloads/
 sudo dpkg -i ~/Downloads/zoom_amd64.deb
-sudo apt install -f
+sudo apt install -f -y
 
 
 # Rocket.Chat client
 # https://github.com/RocketChat/Rocket.Chat.Electron/releases
-wget  https://github.com/RocketChat/Rocket.Chat.Electron/releases/download/2.15.3/rocketchat_2.15.3_amd64.deb -O ~/Downloads/rocketchat_amd64.deb
+curl  https://github.com/RocketChat/Rocket.Chat.Electron/releases/download/2.15.3/rocketchat_2.15.3_amd64.deb  \
+     -L  -o ~/Downloads/rocketchat_amd64.deb  \
+     --socks5 127.0.0.1:1080
 sudo  dpkg -i  ~/Downloads/rocketchat_amd64.deb
 
 
@@ -331,7 +330,7 @@ sudo apt install -f -y
 #  https://help.aliyun.com/document_detail/32196.html?spm=a2c4g.11174283.3.8.2b0e7da2sFT3oF
 curl  -L -o ~/Downloads/ossfs_1.80.6_ubuntu18.04_amd64.deb  http://gosspublic.alicdn.com/ossfs/ossfs_1.80.6_ubuntu18.04_amd64.deb?spm=a2c4g.11186623.2.13.650773580rmnoR&file=ossfs_1.80.6_ubuntu18.04_amd64.deb
 sudo  dpkg -i ~/Downloads/ossfs_1.80.6_ubuntu18.04_amd64.deb
-sudo  apt install -f
+sudo  apt install -f -y
 
 
 # 手动下载
@@ -370,9 +369,9 @@ sudo  apt install -f
 # sougoupinyin
 # https://pinyin.sogou.com/linux/?r=pinyin
 curl -L -o ~/Downloads/sogoupinyin_2.2.0.0108_amd64.deb  http://cdn2.ime.sogou.com/dl/index/1524572264/sogoupinyin_2.2.0.0108_amd64.deb?st=w9MGCFqBUJc1dgVYPlcEvg&e=1560845968&fn=sogoupinyin_2.2.0.0108_amd64.deb
-sudo apt install fcitx
+sudo apt install -y fcitx
 sudo dpkg -i ~/Downloads/sogoupinyin_2.2.0.0108_amd64.deb
-sudo apt install -f
+sudo apt install -f -y
 
 
 # dict
@@ -387,8 +386,8 @@ tar  jxf ~/Downloads/stardict-langdao-ce-gb-2.4.2.tar.bz2  -C ~/.dict/
 
 # neteasteMusic
 wget -P ~/Downloads/  http://d1.music.126.net/dmusic/netease-cloud-music_1.2.1_amd64_ubuntu_20190428.deb
-sudo dpkg -i ~/Downloads/youdao-dict_1.1.0-0-ubuntu_amd64.deb
-sudo apt install -f
+sudo dpkg -i ~/Downloads/netease-cloud-music_1.2.1_amd64_ubuntu_20190428.deb
+sudo apt install -f -y
 
 
 # ------------------------
@@ -399,7 +398,7 @@ mkdir  ~/.opt
 #wget  http://xiazai.xmindchina.cn/trail/xmind-8-linux.zip  -O ~/Downloads/xmind-8-linux.zip
 #unzip ~/Downloads/xmind-8-linux.zip  -d ~/.opt/xmind/
 #sudo  ~/.opt/xmind/setup.sh
-curl -L -o ~/Downloads/XMind-ZEN-for-Linux-64bit.deb  wget  https://www.xmind.cn/xmind/downloads/XMind-ZEN-for-Linux-64bit.deb
+curl -L -o ~/Downloads/XMind-ZEN-for-Linux-64bit.deb  https://www.xmind.cn/xmind/downloads/XMind-ZEN-for-Linux-64bit.deb
 sudo dpkg -i ~/Downloads/XMind-ZEN-for-Linux-64bit.deb
 
 
@@ -408,7 +407,7 @@ sudo dpkg -i ~/Downloads/XMind-ZEN-for-Linux-64bit.deb
 
 # OSD Lyrics歌词外挂
 # 安装在应用程序中
-sudo apt install -y intltool libappindicator-dev  libdbus-glib-1-dev
+sudo apt install -y intltool libappindicator-dev  libdbus-glib-1-dev libnotify-dev
 cd /usr/local/src/
 sudo git clone  https://github.com/osdlyrics/osdlyrics.git
 cd osdlyrics/
