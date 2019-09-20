@@ -6,10 +6,57 @@
 sudo apt install -y  software-properties-common  apt-transport-https  ca-certificates
 
 sudo apt install -y  python3-dev python3-pip
-pip3 install --upgrade pip
+#pip3 install --upgrade pip
 
-sudo apt install -y  tmux vim  git git-lfs openssh-server
-sudo apt install -y  snapd
+sudo apt install -y  ntpdate tmux vim  git git-lfs snapd openssh-server
+
+# x11vncserver
+sudo apt install -y  x11vnc tigervnc-viewer
+
+#win+ubuntu:
+# 设置时钟为本地时间
+sudo timedatectl set-local-rtc 1
+sudo ntpdate  cn.ntp.org.cn
+
+
+
+sudo apt install -y  wireshark
+
+## ss-l
+sudo apt install -y  shadowsocks-libev rng-tools
+# sudo  vim /etc/shadowsocks-libev/hk.json
+sudo  systemctl stop    shadowsocks-libev.service
+sudo  systemctl disable shadowsocks-libev.service
+sudo  systemctl enable  shadowsocks-libev-local@hk.service
+sudo  systemctl start   shadowsocks-libev-local@hk.service
+
+# privoxy --- socks5 to http proxy : 8118
+sudo apt install -y  privoxy
+# sudo vim /etc/privoxy/config
+#listen-address  0.0.0.0:8118
+#forward-socks5    /                127.0.0.1:1080  .
+#forward           .zjlh.lan        .
+#forward           192.168.*.*/     .
+#forward           127.*.*.*/       .
+#forward           localhost/       .
+sudo  systemctl start  privoxy.service
+
+# proxychains
+sudo apt install -y  proxychains4
+# sudo  vim /etc/proxychains4.conf
+# socks5  127.0.0.1      1080
+proxychains4 curl  ip.sb    # test
+
+
+# chrome
+[ ! -f /etc/apt/sources.list.d/google-chrome.list ] && sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
+wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
+sudo apt update
+sudo apt install -y  google-chrome-stable
+
+
+
+
 
 # 好玩
 # 名言fortune
@@ -38,33 +85,7 @@ sudo apt install -y  oneko
 #cal 8 2019
 
 
-## ss-l
-sudo apt install -y  shadowsocks-libev rng-tools
-# sudo  vim /etc/shadowsocks-libev/hk.json
-sudo  systemctl stop    shadowsocks-libev.service
-sudo  systemctl disable shadowsocks-libev.service
-sudo  systemctl enable  shadowsocks-libev-local@hk.service
-sudo  systemctl start   shadowsocks-libev-local@hk.service
 
-# privoxy --- socks5 to http proxy : 8118
-sudo apt install -y  privoxy
-# sudo vim /etc/privoxy/config
-#listen-address  0.0.0.0:8118
-#forward-socks5    /                127.0.0.1:1080  .
-#forward           .zjlh.lan        .
-#forward           192.168.*.*/     .
-#forward           127.*.*.*/       .
-#forward           localhost/       .
-systemctl start  privoxy.service
-
-# proxychains
-sudo apt install -y  proxychains4
-# sudo  vim /etc/proxychains4.conf
-# socks5  127.0.0.1      1080
-proxychains4 curl  ip.sb    # test
-
-
-sudo apt install -y  ntpdate
 sudo apt install -y  nfs-kernel-server
 sudo apt install -y  smbclient cifs-utils
 sudo apt install -y  libpam-google-authenticator    #--- google身份验证器
@@ -80,6 +101,8 @@ sudo apt install -y  httpie     #--- http GET POST，可替代curl、wget
 sudo apt install -y  aria2
 sudo apt install -y  axel       #--- 多路http下载加速
 sudo apt install -y  rtorrent   #--- 命令行torrent客户端
+sudo apt install -y  uget
+sudo apt install -y  deluge
 sudo apt install -y  lftp
 
 sudo apt install -y  bmon
@@ -96,7 +119,7 @@ sudo apt install -y  nmap zenmap
 # font
 sudo apt install -y  fonts-wqy-*
 sudo apt install -y  xfonts-wqy
-mkdir  ~/.fonts
+[ ! -d ~/.fonts ] && mkdir  ~/.fonts
 
 
 sudo apt install -y  catfish
@@ -110,11 +133,12 @@ sudo apt install -y  redis-tools
 sudo apt install -y  apache2-utils
 
 
-sudo apt install -y  tlp
+#sudo apt install -y  tlp   #电源管理
 #sudo apt install -y  libreoffice  libreoffice-l10n-zh-cn
 sudo apt install -y  inkscape
 sudo apt install -y  dia
 sudo apt install -y  gimp
+sudo apt install -y  gthumb    #看图工具
 sudo apt install -y  planner
 sudo apt install -y  filezilla
 #sudo apt install -y  fcitx  fcitx-googlepinyin
@@ -128,22 +152,19 @@ sudo apt install -y audacious    #音乐播放器，支持音乐信息中的gbk�
 sudo apt install -y clementine   #音乐播放器
 sudo apt install -y mencoder     #可以提取视频中的音频，含mplayer命令行播放器
 sudo apt install -y qalculate    #超强计算器gui+cli
-
-
-#win+ubuntu:
-# 设置时钟为本地时间
-sudo timedatectl set-local-rtc 1
-sudo ntpdate  cn.ntp.org.cn
+sudo apt install -y com.github.parnold-x.nasc  #NaSC
 
 
 # 大小写指示器
 sudo add-apt-repository -y -u  ppa:tsbarnes/indicator-keylock
 sudo apt install -y  indicator-keylock
+sleep 5
 
 
 # ansible
 sudo apt-add-repository -y -u  ppa:ansible/ansible
 sudo apt install -y  ansible
+sleep 5
 
 
 # l2tp client
@@ -157,35 +178,21 @@ sudo apt install -y  ansible
 #npm install gitbook-cli -g
 
 
-# NaSC
-sudo apt  install -y  com.github.parnold-x.nasc
-
-
-# uGet
-sudo apt install -y  uget
-
-# deluge
-sudo apt install -y  deluge
-
 
 # tweaks配置工具
 sudo add-apt-repository -y -u  ppa:philip.scott/elementary-tweaks
 sudo apt install -y  elementary-tweaks
+sleep 5
 
 
 # virtualbox
-echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bionic contrib" | sudo tee  /etc/apt/sources.list.d/virtualbox.list
+[ ! -f /etc/apt/sources.list.d/virtualbox.list ] && echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bionic contrib" | sudo tee  /etc/apt/sources.list.d/virtualbox.list
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 sudo apt update
 sudo apt install -y  virtualbox-6.0
+sleep 5
 
-
-# chrome
-sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
-wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
-sudo apt update
-sudo apt install -y  google-chrome-stable
 
 
 # asciinema终端录屏
@@ -217,15 +224,15 @@ sudo apt install -y  thefuck
 
 # pg client & pgadmin
 # https://www.postgresql.org/download/linux/ubuntu/
-echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list    #--- bionic是ubuntu18.04的版本号，自行替换
+[ ! -f /etc/apt/sources.list.d/pgdg.list ] && echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list    #--- bionic是ubuntu18.04的版本号，自行替换
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt update
 sudo apt install -y  pgadmin4 postgresql-client    #--- 不加版本号，代表最新版，下同
+sleep 5
 
 
 # pgcli --- 自动命令提示
 # http://www.postgres.cn/news/viewone/1/313
-pip3 install pgcli
 sudo pip3 install pgcli
 
 
@@ -233,22 +240,22 @@ sudo pip3 install pgcli
 # https://docs.docker.com/install/linux/docker-ce/ubuntu/#set-up-the-repository
 sudo apt install -y  apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/docker-ce.list  #--- bionic是ubuntu18.04的版本代号
+[ ! -f /etc/apt/sources.list.d/docker-ce.list ] && echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/docker-ce.list  #--- bionic是ubuntu18.04的版本代号
 sudo apt update
 sudo apt install -y  docker-ce
+sleep 5
 
 
 # handbrake视频转码，含ong播放器n用dvd解码包，替代w32ocdes
 sudo add-apt-repository -y -u  ppa:stebbins/handbrake-releases
 sudo apt install -y  handbrake-gtk  handbrake-cli
+sleep 5
 
 
-# wireshark
-sudo apt install -y  wireshark
 
 
 # wiznote
-sudo apt install openssl1.0 libssl1.0-dev
+sudo apt install -y  openssl1.0 libssl1.0-dev
 wget https://url.wiz.cn/u/Wizlinux
 chmod +x Wizlinux
 
@@ -256,6 +263,7 @@ chmod +x Wizlinux
 # keepass2
 sudo apt-add-repository -y -u  ppa:jtaylor/keepass
 sudo apt install -y  keepass2
+sleep 5
 # 插件keepasshttp
 sudo apt install -y  mono-complete
 sudo  wget  -P /usr/lib/keepass2/Plugins/  https://raw.github.com/pfn/keepasshttp/master/KeePassHttp.plgx
@@ -269,6 +277,7 @@ sudo  wget  -P /usr/lib/keepass2/Plugins/  https://raw.github.com/pfn/keepasshtt
 # http://blog.topspeedsnail.com/archives/5116
 sudo add-apt-repository  -y -u  ppa:atareao/telegram
 sudo apt install -y  telegram
+sleep 5
 
 
 
@@ -392,7 +401,7 @@ sudo apt install -f -y
 
 # ------------------------
 # install bin to OPT
-mkdir  ~/.opt
+[ ! -d ~/.opt ] && mkdir  ~/.opt
 
 # xMind
 #wget  http://xiazai.xmindchina.cn/trail/xmind-8-linux.zip  -O ~/Downloads/xmind-8-linux.zip
@@ -400,6 +409,14 @@ mkdir  ~/.opt
 #sudo  ~/.opt/xmind/setup.sh
 curl -L -o ~/Downloads/XMind-ZEN-for-Linux-64bit.deb  https://www.xmind.cn/xmind/downloads/XMind-ZEN-for-Linux-64bit.deb
 sudo dpkg -i ~/Downloads/XMind-ZEN-for-Linux-64bit.deb
+
+
+# wechat
+wget -P ~/Downloads/  https://github.com/kooritea/electronic-wechat/releases/download/v2.3.1/electronic-wechat-linux-x64-2.3.1.zip
+unzip  ~/Downloads/electronic-wechat-linux-x64-2.3.1.zip -d ~/.opt/
+# 修改程序路径，然后拷贝
+#vim  ~/.opt/electronic-wechat-linux-x64/electronic-wechat.desktop
+cp ~/.opt/electronic-wechat-linux-x64/electronic-wechat.desktop   ~/.local/share/applications/
 
 
 # ------------------------
@@ -416,6 +433,9 @@ sudo ./configure --enable-appindicator=yes
 sudo make
 sudo make install
 
+pip install future
+pip install pycurl
+sudo apt install lsbcanberra-gtk-module
 
 
 
