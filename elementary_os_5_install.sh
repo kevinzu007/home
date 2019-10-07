@@ -151,6 +151,7 @@ sudo apt install -y sox libsox-fmt-all   #命令行音乐播放器
 sudo apt install -y audacious    #音乐播放器，支持音乐信息中的gbk中文（设置自动检测中文，os需安装gbk支持）
 sudo apt install -y audacity     #音频编辑器
 sudo apt install -y mencoder     #可以提取视频中的音频，含mplayer命令行播放器
+sudo apt install -y flac lame    #音频格式转换 https://blog.csdn.net/jiaobei2354717/article/details/80619381
 sudo apt install -y qalculate    #超强计算器gui+cli
 sudo apt install -y com.github.parnold-x.nasc  #NaSC
 
