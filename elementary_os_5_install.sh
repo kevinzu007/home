@@ -22,13 +22,19 @@ sudo ntpdate  cn.ntp.org.cn
 
 sudo apt install -y  wireshark
 
-## ss-l
-sudo apt install -y  shadowsocks-libev rng-tools
-# sudo  vim /etc/shadowsocks-libev/hk.json
-sudo  systemctl stop    shadowsocks-libev.service
-sudo  systemctl disable shadowsocks-libev.service
-sudo  systemctl enable  shadowsocks-libev-local@hk.service
-sudo  systemctl start   shadowsocks-libev-local@hk.service
+# brook 梯子
+wget  https://github.com/txthinking/brook/releases/download/v20190601/brook  -P /usr/local/bin/
+chmod +x /usr/local/bin/brook
+# 客户端连接-socks5
+# nohup  brook client -l 0.0.0.0:1080 -i 0.0.0.0 -s server:port -p password  > /dev/null 2>&1  &
+
+### ss-l
+#sudo apt install -y  shadowsocks-libev rng-tools
+## sudo  vim /etc/shadowsocks-libev/hk.json
+#sudo  systemctl stop    shadowsocks-libev.service
+#sudo  systemctl disable shadowsocks-libev.service
+#sudo  systemctl enable  shadowsocks-libev-local@hk.service
+#sudo  systemctl start   shadowsocks-libev-local@hk.service
 
 # privoxy --- socks5 to http proxy : 8118
 sudo apt install -y  privoxy
@@ -149,11 +155,23 @@ sudo apt install -y  steam
 sudo apt install -y  pwgen
 sudo apt install -y sox libsox-fmt-all   #命令行音乐播放器
 sudo apt install -y audacious    #音乐播放器，支持音乐信息中的gbk中文（设置自动检测中文，os需安装gbk支持）
-sudo apt install -y audacity     #音频编辑器
 sudo apt install -y mencoder     #可以提取视频中的音频，含mplayer命令行播放器
-sudo apt install -y flac lame    #音频格式转换 https://blog.csdn.net/jiaobei2354717/article/details/80619381
 sudo apt install -y qalculate    #超强计算器gui+cli
 sudo apt install -y com.github.parnold-x.nasc  #NaSC
+
+# Convert FLAC to MP3
+# https://github.com/FredBezies/flac2mp3-bash
+# https://wiki.archlinux.org/index.php/Convert_FLAC_to_MP3#With_FFmpeg
+# https://blog.csdn.net/jiaobei2354717/article/details/80619381
+
+# 音频转换插件flac,lame：
+sudo apt install -y flac lame    #音频格式转换 https://blog.csdn.net/jiaobei2354717/article/details/80619381
+
+# 音频转换插件mac：
+# https://unix.stackexchange.com/questions/165485/why-can-i-not-split-a-ape-file
+sudo add-apt-repository -y ppa:flacon
+sudo apt update
+sudo apt install -y flacon
 
 
 # 大小写指示器

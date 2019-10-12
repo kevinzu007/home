@@ -1,0 +1,19 @@
+
+
+
+工具：
+https://github.com/FredBezies/flac2mp3-bash.git
+
+
+./flac2mp3.sh -b 320  ./明明白白我的心_成龙.flac
+./flac2mp3.sh -b 320 -r  ./
+会覆盖现有文件
+
+
+-r 遍历子目录
+-o 保存到目标路径，默认保存到flac相同位置
+-d 目录深度，配合-r和-o使用
+./flac2mp3.sh -b 320  -r  -o /path/tt/  -d 2  ./   #-r及-o都是2级深度
+
+
+
