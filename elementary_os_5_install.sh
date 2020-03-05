@@ -568,8 +568,7 @@ time curl  https://api.ip.sb/geoip/18.8.128.8
 curl 'http://apis.juhe.cn/ip/ip2addr?ip=18.8.128.8&dtype=json&key=e5ad6f81997d4f101cc3d17409e18d96'
 
 # json格式化：
-echo 'jason字符串' | jq               # ubuntu
-echo 'jason字符串' | json_reformat    # centos
+echo 'jason字符串' | jq  .<key1>.<key2>
 
 # # 图标与菜单快捷方式
 # /usr/share/icons
