@@ -137,6 +137,7 @@ sudo apt install -y  mysql-workbench
 sudo apt install -y  sqlitebrowser
 sudo apt install -y  redis-tools
 sudo apt install -y  apache2-utils
+sudo apt install -y  yajl-tools     #json_reformat工具
 
 
 #sudo apt install -y  tlp   #电源管理
@@ -360,6 +361,13 @@ curl  -L -o ~/Downloads/ossfs_1.80.6_ubuntu18.04_amd64.deb  http://gosspublic.al
 sudo  dpkg -i ~/Downloads/ossfs_1.80.6_ubuntu18.04_amd64.deb
 sudo  apt install -f -y
 
+# ossutil
+# https://www.alibabacloud.com/help/zh/doc-detail/50559.htm?spm=a2c63.p38356.b99.170.77c6434cSLbGLP
+sudo wget http://gosspublic.alicdn.com/ossutil/1.6.7/ossutil64 -P /usr/local/bin/
+sudo chmod +x /usr/local/bin/ossutil64
+#ossutil64 config
+
+
 
 # 手动下载
 
@@ -554,6 +562,14 @@ virt-clone  --auto-clone  --connect qemu+ssh://root@192.168.11.202/system  -o v-
 curl ip.gs
 curl ip.sb
 
+# ip地理位置，免费查
+time curl  https://api.ip.sb/geoip/18.8.128.8
+# ip地址位置，每天免费查100次（聚合公司）
+curl 'http://apis.juhe.cn/ip/ip2addr?ip=18.8.128.8&dtype=json&key=e5ad6f81997d4f101cc3d17409e18d96'
+
+# json格式化：
+echo 'jason字符串' | jq               # ubuntu
+echo 'jason字符串' | json_reformat    # centos
 
 # # 图标与菜单快捷方式
 # /usr/share/icons
@@ -793,6 +809,7 @@ Warning: truncating password to 8 characters
 
 # oracle备份
 create directory backup_dir  as '/u01/backup/nc65';
+#select * from dba_directories;
 
 DbUserName=nc65
 DbPassword=rmIBoJ628nP1bzw1OXnW
@@ -969,6 +986,19 @@ zm     | 关闭所有折叠
 # Shell printf 命令
 # http://www.runoob.com/linux/linux-shell-printf.html
 printf "%-10s %-8s %-4.2f\n" 郭靖 男 66.1234
+
+# shell find 排除子路径 111及222，后面要跟-prune才行，/(、/)前后都要有空格 ，-o 表示or
+find /home/kevin /( -path "/home/kevin/111" -o -path "/home/kevin/222" /) -prune  -type f  -print
+
+# shell find 使用条件匹配(-o 或者 -a，默认为-a)
+find /home/kevin  -type d  -a -name "2019*"  -print
+
+# 查找进程id打开的文件
+lsof -p [PID]
+
+# 查看端口连接信息
+lsof -i :[端口]
+
 
 # 文件中的%unicode转换为汉字
 # 源文件：file:///shouji/music-all/%E7%BE%8E%E7%BE%8E%E5%93%92_%E9%97%A8%E4%B8%BD.mp3
