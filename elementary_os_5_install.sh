@@ -563,9 +563,9 @@ curl ip.gs
 curl ip.sb
 
 # ip地理位置，免费查
-time curl  https://api.ip.sb/geoip/18.8.128.8
+curl -s "https://api.ip.sb/geoip/18.8.128.8"
 # ip地址位置，每天免费查100次（聚合公司）
-curl 'http://apis.juhe.cn/ip/ip2addr?ip=18.8.128.8&dtype=json&key=e5ad6f81997d4f101cc3d17409e18d96'
+curl -s "http://apis.juhe.cn/ip/ip2addr?ip=18.8.128.8&dtype=json&key=e5ad6f81997d4f101cc3d17409e18d96"
 
 # json格式化：
 echo 'jason字符串' | jq  .<key1>.<key2>
@@ -761,6 +761,20 @@ sudo make install
 ((  ))：表示数学表达式
     在判断命令中只允许在比较中进行简单的算术操作，而双圆括号提供更多的数学符号，而且在双圆括号里面的'>','<'号不需要转意。
 
+#echo "abcdefg" | grep 'a.+g' #不匹配任何字符串
+#echo "abcdefg" | grep 'a.\+g' #匹配整个字符串
+#echo "abcdefg" | grep -E 'a.+g' #使用扩展正则表达式，匹配整个字符串
+
+
+# sort高级排序
+sort -t $'\t' -k 1n,1 -k 2n,2 -k4rn,4 -k3,3 <my-file>
+# 解释如下：
+# -t $'\t'：指定TAB为分隔符
+# -k 1, 1: 按照第一列的值进行排序，如果只有第一个1的话，相当于告诉sort从第一列开始直接到行尾排列
+# n:代表是数字顺序，默认情况下市字典序，如10<2
+# r: reverse 逆序排列，默认情况下市正序排列
+# 获取登录者ip
+#w | sed -n '3,$p' | awk '{print $3,$4,$5}' | grep "`date +%H:%M`" | grep 's$' | sort -t " " -k 3,3 | head -n 1 | awk '{print $1,$2}'
 
 
 # 拷贝文件
