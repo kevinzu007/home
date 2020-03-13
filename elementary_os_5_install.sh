@@ -1170,3 +1170,47 @@ awk -F: 'BEGIN {print "REDHAT"} {print NR;print} END {print "WESTOS"}' /etc/pass
 
 
 
+# 进制转换
+## 十六进制转十进制:
+echo '12af' | awk '{print strtonum("0x"$0)}'
+4783
+## 十进制转十六进制:
+echo "4783"|awk '{printf("%x\n",$0)}'
+12af
+## 八进制转十进制:
+echo '011257' | awk '{print strtonum($0)}'
+4783
+## 十进制转八进制:
+echo "4783"|awk '{printf("%o\n",$0)}'
+11257
+
+
+# 16/10进制assic码转换为字符串（汉字、字符、数字）
+## 16进制
+HH='6211 4eec 31 2a 61 20 62 63'
+echo $HH | awk '{ for(i=1;i<=NF;i++) {print strtonum("0x" $i)} }' | awk '{ for(i=1;i<=NF;i++) {printf "%c",$i} } END {printf "\n"}'
+我们1*a bc
+## 10进制
+DD='25105 20204 49 42 97 32 98 99'
+echo $DD | awk '{ for(i=1;i<=NF;i++) {print strtonum($i)} }' | awk '{ for(i=1;i<=NF;i++) {printf "%c",$i} } END {printf "\n"}'
+
+
+# 字符串转换为16/10进制assic码（汉字、字符、数字）
+SSS='我们1*a bc'
+LENGTH=${#SSS}
+## 16进制
+for ((i=0;i<LENGTH;i++)); do printf "%x " "'${SSS:$i:1}"; done; echo
+6211 4eec 31 2a 61 20 62 63
+## 10进制
+for ((i=0;i<LENGTH;i++)); do printf "%d " "'${SSS:$i:1}"; done; echo
+25105 20204 49 42 97 32 98 99
+
+
+# awk不输出指定列用法
+w | sed '1d' |awk '{$2=$6=$7=""; print $0}'     #--- 不输出指定列（将相关列置空），其他全部输出
+
+# awk BEGIN END 用法
+awk -F: 'BEGIN {print "REDHAT"} {print NR;print} END {print "WESTOS"}' /etc/passwd
+
+
+
