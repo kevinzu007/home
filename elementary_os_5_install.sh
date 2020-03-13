@@ -1162,12 +1162,9 @@ for ((i=0;i<LENGTH;i++)); do printf "%d " "'${SSS:$i:1}"; done; echo
 25105 20204 49 42 97 32 98 99
 
 
-# awk不输出指定列用法
-w | sed '1d' |awk '{$2=$6=$7=""; print $0}'     #--- 不输出指定列（将相关列置空），其他全部输出
-
-# awk BEGIN END 用法
-awk -F: 'BEGIN {print "REDHAT"} {print NR;print} END {print "WESTOS"}' /etc/passwd
-
+# getopt getopts使用参考，文件名：
+# getopt-参考.sh
+# getopts-参考.sh
 
 
 # 进制转换
