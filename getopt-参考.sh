@@ -59,13 +59,15 @@ while true ; do
             case "$2" in
                 "") echo "Option c, no argument"; shift 2 ;;
                 *)  echo "Option c, argument \`$2'" ; shift 2 ;;
-            esac 
+            esac
             ;;
         --) shift ; break ;;
         *) echo "内部错误！" ; exit 1 ;;
     esac
 done
+
 echo "剩下的参数:"
+echo "-- $@"
 for arg do
    echo '--> '"\`$arg'" ;
 done

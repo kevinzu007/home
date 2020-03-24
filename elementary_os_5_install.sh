@@ -106,10 +106,13 @@ sudo apt install -y  rar  unrar
 sudo apt install -y  httpie     #--- http GET POST，可替代curl、wget
 sudo apt install -y  aria2
 sudo apt install -y  axel       #--- 多路http下载加速
-sudo apt install -y  rtorrent   #--- 命令行torrent客户端
-sudo apt install -y  uget
-sudo apt install -y  deluge
 sudo apt install -y  lftp
+sudo apt install -y  rtorrent   #--- 命令行torrent客户端
+
+sudo apt install -y  amule      #--- ed2k电驴下载
+wget https://dl.motrix.app/release/Motrix-1.4.1-x86_64.AppImage  #--- 迅雷、磁力、BT下载
+sudo apt install -y  uget       #--- 磁力、BT下载
+#sudo apt install -y  deluge     #--- 磁力、BT下载
 
 sudo apt install -y  bmon
 sudo apt install -y  iftop
@@ -765,6 +768,9 @@ sudo make install
 #echo "abcdefg" | grep 'a.\+g' #匹配整个字符串
 #echo "abcdefg" | grep -E 'a.+g' #使用扩展正则表达式，匹配整个字符串
 
+# 仅显示 非 “#”、“空行”、“空格” 开头的行
+cat t.txt | grep '^[^#$ ]'
+
 
 # sort高级排序
 sort -t $'\t' -k 1n,1 -k 2n,2 -k4rn,4 -k3,3 <my-file>
@@ -1027,15 +1033,20 @@ dos2unix a.txt   #--- 转换
 用vim也行： vim打开/etc/strongswan/ipsec.conf 然后ESC后使用 :set ff=unix ，最后保存退出
 
 
-# 下载迅雷链接：
+# 转换迅雷下载链接为ed2k链接
 ------------------------------------
-迅雷下载协议是经过加密的(只在在ed2k地址前后分别加了AA和ZZ而已)，如：
+迅雷下载协议是经过加密的(只在在ed2k地址前后分别加了AA和ZZ，然后base64编码下而已)，如：
 thunder://QUFlZDJrOi8vfGZpbGV8JUU4JUExJThDJUU1JUIwJUI4JUU4JUI1JUIwJUU4JTgyJTg5LlRoZS5XYWxraW5nLkRlYWQuUzA2RTAxLiVFNCVCOCVBRCVFOCU4QiVCMSVFNSVBRCU5NyVFNSVCOSU5NS5IRFRWcmlwLjEwMjR4NTc2Lm1wNHw2NDg3NTg1MDl8ZjIyZmI2OTRjMDQ0ZmYyNjU0MjhhNTEzNWVhYzhiOTB8aD12eXFsNHFjNHpmYmx0eWNqdW1rcnNibDJza2JscTJsZnwvWlo=
 直接在Linux下面是没有办法下载的。
 在终端下用echo url | base64 -d 来解密，并显示地址，如（URL去掉头和尾）：
 echo QUFlZDJrOi8vfGZpbGV8JUU4JUExJThDJUU1JUIwJUI4JUU4JUI1JUIwJUU4JTgyJTg5LlRoZS5XYWxraW5nLkRlYWQuUzA2RTAxLiVFNCVCOCVBRCVFOCU4QiVCMSVFNSVBRCU5NyVFNSVCOSU5NS5IRFRWcmlwLjEwMjR4NTc2Lm1wNHw2NDg3NTg1MDl8ZjIyZmI2OTRjMDQ0ZmYyNjU0MjhhNTEzNWVhYzhiOTB8aD12eXFsNHFjNHpmYmx0eWNqdW1rcnNibDJza2JscTJsZnwvWlo= | base64 -d
 显示结果是：AAed2k://|file|%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89.The.Walking.Dead.S06E01.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024x576.mp4|648758509|f22fb694c044ff265428a5135eac8b90|h=vyql4qc4zfbltycjumkrsbl2skblq2lf|/ZZ
-所以解密后的地址是：ed2k://|file|%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89.The.Walking.Dead.S06E01.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024x576.mp4|648758509|f22fb694c044ff265428a5135eac8b90|h=vyql4qc4zfbltycjumkrsbl2skblq2lf|/
+所以解密后的地址是（即去掉头尾的AA和ZZ）：ed2k://|file|%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89.The.Walking.Dead.S06E01.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HDTVrip.1024x576.mp4|648758509|f22fb694c044ff265428a5135eac8b90|h=vyql4qc4zfbltycjumkrsbl2skblq2lf|/
+
+
+# 通过bt种子的hash值找到磁力下载链接：
+例如某bt种子的hash='E5757D533B3690774519E6A80021E43C03A58C0B'
+则磁力下载链接为：magnet:?xt=urn:btih:${hash}
 
 
 # nvidia显卡驱动安装
@@ -1043,7 +1054,9 @@ echo QUFlZDJrOi8vfGZpbGV8JUU4JUExJThDJUU1JUIwJUI4JUU4JUI1JUIwJUU4JTgyJTg5LlRoZS5
 # 切换到命令行模式
 ctrl+alt+F1
 # 自动或手动写入文件，以关闭nouveau模块
-## 自动：这种方式需要先stop X windows，例如：ubuntu下/etc/init.d/lightdm stop; sudo ./NVIDIA驱动.run
+## 自动：这种方式需要先stop X windows，例如：ubuntu下
+      sudo /etc/init.d/lightdm stop;
+      sudo /path_to/NVIDIA驱动.run
 ## 手动：vi /etc/modprobe.d/blacklist-nouveau.conf
       blacklist nouveau
       options nouveau modeset=0
@@ -1055,9 +1068,9 @@ reboot
 # 切换到命令行模式
 ctrl+alt+F1
 # 关闭x windows
-/etc/init.d/lightdm stop
+sudo /etc/init.d/lightdm stop
 # 安装
-sudo ./NVIDIA驱动.run
+sudo /path_to/NVIDIA驱动.run
 
 
 # HTTPS 协议和原理
@@ -1208,6 +1221,16 @@ w | sed '1d' |awk '{$2=$6=$7=""; print $0}'     #--- 不输出指定列（将相
 
 # awk BEGIN END 用法
 awk -F: 'BEGIN {print "REDHAT"} {print NR;print} END {print "WESTOS"}' /etc/passwd
+
+
+# 获取web服务器、邮件服务器证书方法：
+echo -n | openssl s_client -connect www.gc-life.com:443
+echo -n | openssl s_client -connect smtp.163.com:465
+## 获取证书并写入文件
+echo -n | openssl s_client -connect smtp.163.com:465 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > ./smtp.163.com.crt
+
+cd /etc/pki/nssdb
+certutil -A -n 'ym.163.com' -t 'P,P,P' -d ./ -i ./smtp.163.com.crt
 
 
 
