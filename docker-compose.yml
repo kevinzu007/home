@@ -1,0 +1,85 @@
+version: "3"
+services:
+  mysql:
+    # https://dev.mysql.com/doc/refman/8.0/en/docker-mysql-more-topics.html
+    image: mysql:5.7
+    restart: always
+    ports:
+      - 3307:3306
+    volumes:
+      - ./data/mysql/my.cnf:/etc/my.cnf
+      - ./data/mysql/conf.d:/etc/mysql/conf.d
+      - ./data/mysql/db:/var/lib/mysql
+      - ./data/mysql/initdb.d:/docker-entrypoint-initdb.d    #如果有任何.sh或.sql你想它在创建后立即在数据库上运行脚本，把它放在这里
+    environment:
+      #- MYSQL_LOG_CONSOLE=true   #MySQL Server错误日志将重定向到stderr，以便写入Docker容器日志
+      #- MYSQL_ROOT_HOST=%        #默认情况下，MySQL创建 'root'@'localhost'帐户。只能从容器内部连接该帐户，例如MYSQL_ROOT_HOST=172.*.*.*
+      - MYSQL_ROOT_PASSWORD: 1234567890    #MYSQL_ROOT_PASSWORD、MYSQL_RANDOM_ROOT_PASSWORD、MYSQL_ONETIME_PASSWORD、MYSQL_ALLOW_EMPTY_PASSWORD四选一
+      #- MYSQL_ALLOW_EMPTY_PASSWORD=false
+      #- MYSQL_ONETIME_PASSWORD=false
+      #- MYSQL_RANDOM_ROOT_PASSWORD=false
+      #
+      - MYSQL_DATABASE=dbnamexxx   #启动时创建新数据库
+      - MYSQL_USER=yyy
+      - MYSQL_PASSWORD=zzz
+
+    # 使用utf8mb4默认字符集和utf8mb4_col数据库的默认排序规则启动
+    command: 
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_col
+
+
+ mariadb:
+    # https://hub.docker.com/_/mariadb
+    # 备份docker exec some-mariadb sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' > /some/path/on/your/host/all-databases.sql
+    # 还原docker exec -i some-mariadb sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD"' < /some/path/on/your/host/all-databases.sql
+    # 也可以用已存在的卷数据库文件启动数据库
+    image: mariadb
+    restart: always
+    ports:
+      - 3307:3306
+    volumes:
+      - ./data/mariadb/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root1234567890
+      - MYSQL_DATABASE=communityserver
+      - MYSQL_USER=communityserver_u
+      - MYSQL_PASSWORD=communityserver_u1234567890
+
+
+
+# nfs
+#volumes:
+#  nextcloud-data:
+#    driver: "local"
+#    driver_opts:
+#      type: "nfs"
+#      o: "addr=192.168.11.201,rw"
+#      device: ":/zjlh/d2/nextcloud"
+#      # 要开好多端口啊，不好
+
+# dir
+#volumes:
+#  my-mount:
+#    driver: local
+#    driver_opts:
+#      type: none
+#      o: bind
+#      device: "/path/to/dir"
+
+# oss
+#volumes:
+#  nextcloud-data:
+#    driver: "alicloud/oss"
+#    driver_opts:
+#      accesskeyid: "LTAI4FguDHqRviwCrBK1VTur"
+#      accesskeysecret: "DiINEudKzBz8BXtfby7lJqxNaRWxrI"
+#      region: "oss-cn-hongkong"
+#      internal: "no"
+#      bucket: "gclife-backup"
+#      rootdirectory: "test"
+#      otherOpts: "-o max_stat_cache_size=0 -o allow_other"
+#      #endpoint: [bucket].[region].aliyuncs.com or [bucket].[region]-internal.aliyuncs.com
+#      # 要安装插件，我不会
+
+

@@ -23,7 +23,7 @@
 # We need TEMP as the `eval set --' would nuke the return value of getopt.
 
 # -o  表示短选项
-# :   最前面一个冒号表示
+# :   最前面一个冒号表示？  好像可有可无
 # :   后面一个冒号表示该选项有一个必选参数，如-b xxx
 # ::  后面两个冒号表示该选项有一个可选参数，可选参数必须紧贴选项
 #     如-cyyy 而不能是-c yyy
@@ -35,7 +35,11 @@
 #     mkdir -f #不成功，因为-f会被mkdir当作选项来解析，这时就可以使用
 #     mkdir -- -f 这样-f就不会被作为选项。
 # 校验参数的方法：
-#    getopt -o ab:c:  --longoptions a-long,b-long:,c-long:  --  ggg -ab bbbbbb fff -c sdf hhh -d
+#    $ getopt -o ab:c:d::  --longoptions a-long,b-long:,c-long:d-long::  --  ggg -ab bbbbbb fff -c ccc hhh -d iii
+#     -a -b 'bbbbbb' -c 'ccc' -d '' -- 'ggg' 'fff' 'hhh' 'iii'
+#    $ getopt -o ab:c:d::  --longoptions a-long,b-long:,c-long:d-long::  --  ggg -ab bbbbbb fff -c ccc hhh -diii
+#     -a -b 'bbbbbb' -c 'ccc' -d 'iii' -- 'ggg' 'fff' 'hhh'
+
 
 #TEMP=`getopt -o ab:c::  --longoptions a-long,b-long:,c-long::  -n 'example.bash' -- "$@"`
 TEMP=`getopt -o ab:c:  --longoptions a-long,b-long:,c-long:  -- "$@"`

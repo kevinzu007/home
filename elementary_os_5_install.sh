@@ -84,11 +84,33 @@ sudo apt install -y  figlet toilet
 sudo apt install -y  boxes lolcat
 #fortune | boxes -d cat
 #fortune | boxes -d cat | lolcat    #--- 上色
+# 文字上色
+#echo wwwwwwwwwwwwwwwww | lolcat
 # 桌面上出现一直喵星人，跟着你的鼠标跑
 sudo apt install -y  oneko
 #oneko &
 # cal打印日历
+#cal
 #cal 8 2019
+
+
+# scrot命令行截图
+sudo apt install -y  scrot        #--- 命令行截图工具
+# scrot -s -e 'echo "截图文件：$f";  echo "截图大小: $w x $h";
+
+
+# 二维码
+# 文本转化为二维码图片或二维码字符
+sudo apt install -y  qrencode     #--- 编码二维码
+#echo "wowowwooowwowowo" | qrencode -o a.png           #--- 默认输出png图片二维码
+#echo "wowowwooowwowowo" | qrencode -t utf8            #--- 灰白
+#echo "wowowwooowwowowo" | qrencode -t utf8 | lolcat   #--- 上个色
+#echo "wowowwooowwowowo" | qrencode -t ANSIUTF8        #--- 纯白
+#echo "wowowwooowwowowo" | qrencode -t ASCIIi          #--- "#"字符格式二维码
+# 二维码图片转化为文本
+sudo apt install -y  zbar-tools   #--- 解码二维码
+#zbarimg  a.png                   #--- 图片二维码文件转换为文本
+#scrot -s -e 'echo "截图文件：$f";  echo "截图大小: $w x $h";  zbarimg "$f";  rm -f "$f"'     #--- 鼠标截图二维码转换为文本
 
 
 
@@ -98,17 +120,17 @@ sudo apt install -y  libpam-google-authenticator    #--- google身份验证器
 
 sudo apt install -y  ntfs-3g
 sudo apt install -y  exfat-fuse
+sudo apt install -y  sshfs
 
 sudo apt install -y  unzip
 sudo apt install -y  p7zip  p7zip-rar
 sudo apt install -y  rar  unrar
 
 sudo apt install -y  httpie     #--- http GET POST，可替代curl、wget
-sudo apt install -y  aria2
 sudo apt install -y  axel       #--- 多路http下载加速
 sudo apt install -y  lftp
 sudo apt install -y  rtorrent   #--- 命令行torrent客户端
-
+sudo apt install -y  aria2      #--- 磁力、BT下载、url下载
 sudo apt install -y  amule      #--- ed2k电驴下载
 wget https://dl.motrix.app/release/Motrix-1.4.1-x86_64.AppImage  #--- 迅雷、磁力、BT下载
 sudo apt install -y  uget       #--- 磁力、BT下载
@@ -131,6 +153,7 @@ sudo apt install -y  xfonts-wqy
 [ ! -d ~/.fonts ] && mkdir  ~/.fonts
 
 
+sudo apt install -y  meld     #文件比较
 sudo apt install -y  catfish
 sudo apt install -y  tree
 sudo apt install -y  lnav
@@ -140,7 +163,7 @@ sudo apt install -y  mysql-workbench
 sudo apt install -y  sqlitebrowser
 sudo apt install -y  redis-tools
 sudo apt install -y  apache2-utils
-sudo apt install -y  yajl-tools     #json_reformat工具
+sudo apt install -y  jq     #json格式化
 
 
 #sudo apt install -y  tlp   #电源管理
@@ -157,11 +180,16 @@ sudo apt install -y  chromium-browser
 sudo apt install -y  firefox  #firefox-locale-zh-hans
 sudo apt install -y  steam
 sudo apt install -y  pwgen
+#sudo apt install -y  pass qtpass         #密码管理工具
 sudo apt install -y sox libsox-fmt-all   #命令行音乐播放器
 sudo apt install -y audacious    #音乐播放器，支持音乐信息中的gbk中文（设置自动检测中文，os需安装gbk支持）
 sudo apt install -y mencoder     #可以提取视频中的音频，含mplayer命令行播放器
 sudo apt install -y qalculate    #超强计算器gui+cli
 sudo apt install -y com.github.parnold-x.nasc  #NaSC
+
+# 清理dns缓存
+sudo apt install -y nscd
+sudo systemctl restart nscd.service
 
 # Convert FLAC to MP3
 # https://github.com/FredBezies/flac2mp3-bash
@@ -267,6 +295,8 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo apt update
 sudo apt install -y  docker-ce
 sleep 5
+sudo usermod -aG docker $USER
+newgrp docker
 
 
 # handbrake视频转码，含ong播放器n用dvd解码包，替代w32ocdes
@@ -486,7 +516,7 @@ autojump
 #
 # # apt 使用http/https代理：
 # export http_proxy='http://192.168.11.10:8118'
-# export https_proxy='http://192.168.11.10:8118'
+# export https_proxy='https://192.168.11.10:8118'
 # apt update
 #
 #
@@ -551,6 +581,32 @@ curl -e "www.linux.com" http://mail.linux.com
 # 显示下载进度条
 curl -# -O http://www.linux.com/dodo1.JPG
 
+# aria2c
+# 参考：https://blog.csdn.net/hjwang1/article/details/44408633
+# https://binux.blog/2012/12/aria2-examples/
+# 说明：想要停止下载，可以按Ctrl-C。想要恢复下载，可以在同一个文件夹中执行相同的下载命令。只要URI指向同一个文件，URIs是可以被改变的。
+## 同时下载文件中的5个url
+aria2c -j 5  -i files.txt
+## 使用两个连接下载这个文件
+aria2c -x 2  http://host/image.iso
+## 用两个连接下载同一个文件
+aria2c http://host1/file.zip ftp://host2/file.zip
+## 查看并选择性下载bt种子中的文件：
+aria2c -S file.torrent
+aria2c --select-file=1-4,6 -T file.torrent
+## 同时进行多个 bt 的下载:
+aria2c /path/to/file1.torrent  http://site/file2.torrent
+## 下载完成后，执行一条命令：
+aria2c --on-download-complete=COMMAND http://example.org/file.iso
+## 使用代理服务器
+aria2c --all-proxy='http://proxy:8080' http://host/file
+aria2c --https-proxy='https://username:password@proxy:8080' http://host/file
+## 启动server，默认监听6800，需要webui-aria2等界面进行管理
+aria2c --enable-rpc --rpc-listen-all
+aria2c --enable-rpc --rpc-listen-all  --rpc-secret 'passwordddddddddddddddddd'
+## webui-aria2等界面
+docker run --rm -p 8002:80 timonier/webui-aria2:latest
+docker run -d -p 8002:80 timonier/webui-aria2:latest
 
 
 # 拷贝文件
@@ -572,6 +628,11 @@ curl -s "http://apis.juhe.cn/ip/ip2addr?ip=18.8.128.8&dtype=json&key=e5ad6f81997
 
 # json格式化：
 echo 'jason字符串' | jq  .<key1>.<key2>
+# json 之 jq使用大法：
+# https://lzone.de/cheat-sheet/jq
+# jq手册（开发版）:
+# https://stedolan.github.io/jq/manual/
+
 
 # # 图标与菜单快捷方式
 # /usr/share/icons
@@ -829,15 +890,27 @@ Warning: truncating password to 8 characters
 # oracle备份
 create directory backup_dir  as '/u01/backup/nc65';
 #select * from dba_directories;
-
 DbUserName=nc65
 DbPassword=rmIBoJ628nP1bzw1OXnW
 DbSchemas=nc65
 ExpdpOption=
 OracleDirectoryName=backup_dir
 DbBackupToFileName=nc65-expdp
-
 expdp ${DbUserName}/${DbPassword} schemas=${DbSchemas} ${ExpdpOption} directory=${OracleDirectoryName} dumpfile=${DbBackupToFileName}.dmp logfile=${DbBackupToFileName}.log
+
+
+# Oracle查看用户密码过期，修改永不过期:
+01、查看当前open用户#
+select username,account_status,expiry_date,profile from dba_users;
+02、查看目前的密码过期策略#
+select * from dba_profiles s where s.profile='DEFAULT' and resource_name='PASSWORD_LIFE_TIME';
+03、修改密码过期策略#
+alter profile default limit password_life_time unlimited;
+04、过期的账户，重置密码后期不会再过期#
+$sqlplus / as sysdba
+alter user smsc identified by <原来的密码>     #---不用换新密码
+
+
 
 
 # 建立pg只读用户
@@ -901,8 +974,31 @@ sdf
 cat yyy.xml | grep -A 1 "hostname" |awk 'match($0, "<value>(.*)</value>", a) {print a[1]}'
 0.0.0.0
 
+# awk 字符串赋值给数组
+z=(`echo $line | awk  'BEGIN{FS=" "} {for(i=1;i<=NF;i++) {print $i}}'`)
+echo ${z[0]}
+
+# 将脚本参数赋值给数组，哪怕参数值为空时也会原样保存，可用于getopt之 a:: 类型的脚本参数"
+n=$#
+# 脚本参数从1开始，数组是从0开始，所以处理下，避免计算转换
+aa[0]="占位"
+for ((i=1;i<=n;i++)); do
+    eval K=\$$i
+    # "--" 及它之后的参数跳过
+    if [[ "x${K}" == "x--" ]]; then
+        break
+    fi
+    aa[$i]=$K
+    echo aa数组$i列的值是: ${aa[$i]}
+done
+
+
 # awk 参考
 # https://www.cnblogs.com/emanlee/p/3327576.html
+# RS：Record Separator，记录分隔符
+# ORS：Output Record Separate，输出当前记录分隔符
+# FS：Field Separator，字段分隔符
+# OFS：Out of Field Separator，输出字段分隔符
 # aliyun DNS 格式化
 # cc={aaa:{bbb:[{1,2,3},{a,b,c},{z,x,c}]}}
 # cc=`echo ${cc#*[}`
@@ -1233,4 +1329,13 @@ cd /etc/pki/nssdb
 certutil -A -n 'ym.163.com' -t 'P,P,P' -d ./ -i ./smtp.163.com.crt
 
 
+# ss用法
+ss sport = 22
+ss state established '( dport = :ssh or sport = :ssh )'
 
+# 测试udp侦听端口是否开启
+nc -vuz 8.8.8.8 53
+
+
+--add-masquerade     snat就是ip地址伪装，是将接收到的请求的源地址设置为转发请 求网卡的地址
+--add-forward-port   dnat
