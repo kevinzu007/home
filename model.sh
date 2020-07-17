@@ -89,6 +89,13 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
+# 参数个数为0
+if [[ $# -eq 0 ]]; then
+    echo "请提供必要运行参数，退出"
+    F_HELP
+    exit 1
+fi
+
 
 # start
 eval set -- "${TEMP}"

@@ -72,8 +72,8 @@ services:
 #  nextcloud-data:
 #    driver: "alicloud/oss"
 #    driver_opts:
-#      accesskeyid: "LTAI4FguDHqRviwCrBK1VTur"
-#      accesskeysecret: "DiINEudKzBz8BXtfby7lJqxNaRWxrI"
+#      accesskeyid: "LTAI4FguDHqRviwCxxxxxx"
+#      accesskeysecret: "DiINEudKzBz8xxxxxxxxxxx"
 #      region: "oss-cn-hongkong"
 #      internal: "no"
 #      bucket: "gclife-backup"
