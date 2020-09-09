@@ -107,6 +107,8 @@ sudo apt install -y  qrencode     #--- 编码二维码
 #echo "wowowwooowwowowo" | qrencode -t utf8 | lolcat   #--- 上个色
 #echo "wowowwooowwowowo" | qrencode -t ANSIUTF8        #--- 纯白
 #echo "wowowwooowwowowo" | qrencode -t ASCIIi          #--- "#"字符格式二维码
+#qrencode -t utf8  < /path/file.txt                    #--- 从文件导入
+
 # 二维码图片转化为文本
 sudo apt install -y  zbar-tools   #--- 解码二维码
 #zbarimg  a.png                   #--- 图片二维码文件转换为文本
@@ -169,7 +171,9 @@ sudo apt install -y  jq     #json格式化
 #sudo apt install -y  tlp   #电源管理
 #sudo apt install -y  libreoffice  libreoffice-l10n-zh-cn
 sudo apt install -y  inkscape
-sudo apt install -y  dia
+#sudo apt install -y  dia
+# 这个比dia好很多：https://www.diagrams.net/   https://github.com/jgraph/drawio-desktop/releases
+wget https://github.com/jgraph/drawio-desktop/releases/download/v13.6.2/draw.io-amd64-13.6.2.deb
 sudo apt install -y  gimp
 sudo apt install -y  gthumb    #看图工具
 sudo apt install -y  planner
@@ -186,6 +190,11 @@ sudo apt install -y audacious    #音乐播放器，支持音乐信息中的gbk�
 sudo apt install -y mencoder     #可以提取视频中的音频，含mplayer命令行播放器
 sudo apt install -y qalculate    #超强计算器gui+cli
 sudo apt install -y com.github.parnold-x.nasc  #NaSC
+
+# 博客工具
+sudo apt install -y ruby ruby-dev make gcc g++
+sudo gem install bundler
+sudo gem install jekyll
 
 # 清理dns缓存
 sudo apt install -y nscd
@@ -938,6 +947,7 @@ env_file    ：可以给docker-compose.yml中的变量用，也可以给容器�
 environment ：仅给容器中的环境变量用，不能用于docker-compose.yml中的变量。使用environment关键字时，如果不赋值，则会将shell中的环境变量传递给容器
 args        ：是给Dockerfile中的变量的，用于制作镜像，即Dockerfile中的AVG
 变量优先级顺序：environment --> env_file --> Dockerfile(ARG/ENV)
+查看docker-compose.yml最终环境变量：docker-compose config
 
 Dockerfile:
 ARG  ：可以设置变量默认值，也可以从docker build参数--build-arg中获取，会覆盖默认值。仅在build时有效，即仅用于生成image
@@ -1333,8 +1343,9 @@ certutil -A -n 'ym.163.com' -t 'P,P,P' -d ./ -i ./smtp.163.com.crt
 ss sport = 22
 ss state established '( dport = :ssh or sport = :ssh )'
 
-# 测试udp侦听端口是否开启
-nc -vuz 8.8.8.8 53
+# 测试udp侦听端口是否开启：（nc -v -u 8.8.8.8 53 ：这种测试其他服务的udp端口不行，可能是因为udp无需握手）
+nc -v -u -l 5555
+nc -v -u    ip 5555
 
 
 --add-masquerade     snat就是ip地址伪装，是将接收到的请求的源地址设置为转发请 求网卡的地址
