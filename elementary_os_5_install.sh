@@ -1,4 +1,4 @@
-#!/bin/bash
+#bash
 
 # elementary_install:
 # ------------------------
@@ -8,7 +8,8 @@ sudo apt install -y  software-properties-common  apt-transport-https  ca-certifi
 sudo apt install -y  python3-dev python3-pip
 #pip3 install --upgrade pip
 
-sudo apt install -y  ntpdate tmux vim  git git-lfs snapd openssh-server
+sudo apt install -y  ntpdate  vim  git git-lfs snapd openssh-server
+sudo apt install -y  tmux  tmate
 
 # x11vncserver
 sudo apt install -y  x11vnc tigervnc-viewer
@@ -155,6 +156,7 @@ sudo apt install -y  xfonts-wqy
 [ ! -d ~/.fonts ] && mkdir  ~/.fonts
 
 
+sudo apt install -y  shellcheck   #shell语法检查
 sudo apt install -y  meld     #文件比较
 sudo apt install -y  catfish
 sudo apt install -y  tree
@@ -165,7 +167,9 @@ sudo apt install -y  mysql-workbench
 sudo apt install -y  sqlitebrowser
 sudo apt install -y  redis-tools
 sudo apt install -y  apache2-utils
+sudo apt install -y  whois     # mkpasswd
 sudo apt install -y  jq     #json格式化
+
 
 
 #sudo apt install -y  tlp   #电源管理
@@ -237,6 +241,28 @@ sleep 5
 # https://github.com/GitbookIO/gitbook/blob/master/docs/setup.md
 #npm install gitbook-cli -g
 
+
+# 图床picgo图形版(一般用它就好)
+# https://github.com/Molunerfinn/PicGo/releases
+# https://www.bilibili.com/read/cv10288009/
+# 配置文件路径：~/.config/picgo/data.json
+
+
+# 图床picgo命令行
+# https://github.com/PicGo/PicGo-Core
+# 插件：https://github.com/PicGo/Awesome-PicGo
+# 配置文件路径：~/.picgo/config.json
+npm install picgo -g
+picgo install  picgo-plugin-gitee-uploader  #---需在当前用户下安装
+picgo  install  picgo-plugin-autocopy       #---自动拷贝链接
+# 啥用：
+picgo set  [uploader|transformer|plugin]
+picgo set  uploader   #---配置图床
+picgo use             #---选择默认使用哪个图床及插件
+picgo [upload|u]  图片.jpg    #---上传指定图片
+
+# 图床picgo关联Typora
+# https://www.yht7.com/news/114454
 
 
 # tweaks配置工具
@@ -487,6 +513,10 @@ unzip  ~/Downloads/electronic-wechat-linux-x64-2.3.1.zip -d ~/.opt/
 #vim  ~/.opt/electronic-wechat-linux-x64/electronic-wechat.desktop
 cp ~/.opt/electronic-wechat-linux-x64/electronic-wechat.desktop   ~/.local/share/applications/
 
+# marp(markdown to ppt pdf ...)
+# https://marp.app/
+./.opt/marp -p 深蓝保学习-今日之星-问答.ppt.md
+
 
 # ------------------------
 # source install
@@ -531,12 +561,14 @@ autojump
 #
 # # git 使用代理
 # # 设置代理
-# git config --global  https.proxy  socks5://127.0.0.1:1080
-# # 取消代理
-# git config --global --unset https.proxy
-# #
+# git config --global  http.proxy  192.168.11.10:8118
+# git config --global  https.proxy 192.168.11.10:8118
+# 或
 # git config --global  http.proxy  socks5://127.0.0.1:1080
-# git config --global  --unset http.proxy
+# git config --global  https.proxy socks5://127.0.0.1:1080
+# # 取消代理
+# git config --global --unset http.proxy
+# git config --global --unset https.proxy
 # #
 # # 只对github.com代理
 # git config --global  http.https://github.com.proxy  socks5://127.0.0.1:1080
@@ -552,7 +584,7 @@ autojump
 # # wget自动跟随链接重定向
 # wget  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb  \
 #     -P ~/Downloads/  \
-#     -e use_proxy=yes  -e https_proxy=http://192.168.11.10:8118  -e http_proxy=http://192.168.11.10:8118  \
+#     -e use_proxy=yes  -e https_proxy=192.168.11.10:8118  -e http_proxy=192.168.11.10:8118  \
 #     --no-check-certificate
 #
 #
@@ -564,15 +596,23 @@ autojump
 # # -k ： 不检查证书
 # # http代理:
 # curl  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb  \
-#     -L  -o ~/Downloads/haroopad-v0.13.1-x64.deb  \
-#     -x http://192.168.11.10:8118  \
-#     -k
+#     -o ~/Downloads/haroopad-v0.13.1-x64.deb  \
+#     -L  \
+#     -k  \
+#     -x http://192.168.11.10:8118
 #
 # # socks5代理:
 # curl  https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb  \
-#     -L  -o ~/Downloads/haroopad-v0.13.1-x64.deb  \
-#     --socks5 192.168.11.10:1080  \
-#     -k
+#     -o ~/Downloads/haroopad-v0.13.1-x64.deb  \
+#     -L  \
+#     -k  \
+#     --socks5 192.168.11.10:1080
+#
+#
+# # pip使用代理：
+# pip3 install lll  --proxy 192.168.11.10:8118
+# pip3 install -r odoo/requirements.txt --proxy 192.168.11.10:8118
+
 
 
 # Linux curl命令详解
@@ -619,8 +659,14 @@ docker run -d -p 8002:80 timonier/webui-aria2:latest
 
 
 # 拷贝文件
-#rsync -av ../pg --exclude=.git root@47.52.22.138:~/
-#cp  `ls | grep -v zhidao.txt | xargs`   /test2
+rsync -av ../pg --exclude=.git root@47.52.22.138:~/
+cp  `ls | grep -v zhidao.txt | xargs`  /test2
+
+# 不能拷贝软连接（会转化成文件或目录）
+ansible nginx_real -m copy -a "src=./dist/  dest=${WEBSITE_BASE}/${PJ}/releases/$(date +%Y%m%d)/ backup=no"
+# 可以拷贝软连接，还会自动创建父目录
+ansible nginx_real -m synchronize -a "src=./dist/  dest=${WEBSITE_BASE}/${PJ}/releases/$(date +%Y%m%d)/  rsync_opts=--perms=yes,--times=yes"
+
 
 # kvm 远程克隆
 virt-clone  --auto-clone  --connect qemu+ssh://root@192.168.11.202/system  -o v-192-168-11-25-pg  -n pg-t
@@ -641,6 +687,15 @@ echo 'jason字符串' | jq  .<key1>.<key2>
 # https://lzone.de/cheat-sheet/jq
 # jq手册（开发版）:
 # https://stedolan.github.io/jq/manual/
+# 使用jq的|=运算符来动态更新密钥
+TLS_KEY=$(base64 < "./tls.key" | tr -d '\n')
+TLS_CRT=$(base64 < "./tls.crt" | tr -d '\n')
+kubectl get secrets tls-rancher-ingress -o json \
+        | jq '.data["tls.key"] |= "$TLS_KEY"' \
+        | jq '.data["tls.crt"] |= "$TLS_CRT"' \
+        | kubectl apply -f -
+aliyun ecs DescribeRegions | jq '.Regions.Region[] | select(.LocalName == "华南3（广州）") | {RegionId}'
+aliyun ecs DescribeRegions | jq '.Regions.Region[] | select(.LocalName | contains("广州")) | {RegionId}'
 
 
 # # 图标与菜单快捷方式
@@ -825,6 +880,10 @@ sudo make install
 浏览器：http://127.0.0.1:9091
 
 
+# echo输出颜色、printf输出颜色
+# https://www.cnblogs.com/feige1314/p/6908600.html
+printf  "\033[33;1mxxxxxx\033[0m"
+
 
 # 条件判断
 # https://blog.csdn.net/jasonzeng/article/details/53286384
@@ -834,13 +893,23 @@ sudo make install
 ((  ))：表示数学表达式
     在判断命令中只允许在比较中进行简单的算术操作，而双圆括号提供更多的数学符号，而且在双圆括号里面的'>','<'号不需要转意。
 
-#echo "abcdefg" | grep 'a.+g' #不匹配任何字符串
-#echo "abcdefg" | grep 'a.\+g' #匹配整个字符串
-#echo "abcdefg" | grep -E 'a.+g' #使用扩展正则表达式，匹配整个字符串
+# -E与无-E的区别
+# http://vansteve911.github.io/2015/11/12/bash-grep-defects/
+# 正则类型：
+# BREs：grep、sed
+# EREs：'grep -E'、egrep、awk、'sed -r'
+#
+# 匹配以a开头以g结尾的字符串
+#echo "abcdefg" | grep 'a.+g' #不能正确匹配
+#echo "abcdefg" | grep 'a.\+g' #可以匹配（使用转义）
+#echo "abcdefg" | grep -E 'a.+g' #使用扩展正则表达式，可以匹配
 
 # 仅显示 非 “#”、“空行”、“空格” 开头的行
 cat t.txt | grep '^[^#$ ]'
 
+# 邮件地址正则匹配
+EMAIL_REGULAR='^[a-zA-Z0-9]+[a-zA-Z0-9_\.]*@([a-zA-Z0-9]+[a-zA-Z0-9\-]*[a-zA-Z0-9]\.)*[a-z]+$'
+[[ "${MY_EMAIL}" =~ ${EMAIL_REGULAR} ]] && echo '匹配'     #这里匹配规则不能加引号
 
 # sort高级排序
 sort -t $'\t' -k 1n,1 -k 2n,2 -k4rn,4 -k3,3 <my-file>
@@ -852,10 +921,6 @@ sort -t $'\t' -k 1n,1 -k 2n,2 -k4rn,4 -k3,3 <my-file>
 # 获取登录者ip
 #w | sed -n '3,$p' | awk '{print $3,$4,$5}' | grep "`date +%H:%M`" | grep 's$' | sort -t " " -k 3,3 | head -n 1 | awk '{print $1,$2}'
 
-
-# 拷贝文件
-rsync -av ../pg --exclude=.git root@47.52.22.138:~/
-cp  `ls | grep -v zhidao.txt | xargs`   /test2
 
 
 # 查找[]cmd]所在的包
@@ -921,26 +986,6 @@ alter user smsc identified by <原来的密码>     #---不用换新密码
 
 
 
-
-# 建立pg只读用户
-CREATE USER ff83df9995bc56df WITH ENCRYPTED PASSWORD '91ebf844c8ea7e3dcde2478d93b756';
-alter user ff83df9995bc56df set default_transaction_read_only=on ;
-grant USAGE ON SCHEMA public to ff83df9995bc56df ;
-在某数据库中：
-grant select on all tables in schema public to ff83df9995bc56df ;
-
-for DB in `cat ./pg_db.list`
-do
-    echo ----- ${DB} -----
-/usr/local/pgsql/bin/psql << EOF
-    \c ${DB}
-    grant select on all tables in schema public to ff83df9995bc56df ;
-    \q
-EOF
-done
-
-
-
 docker-compose.yml:
 # https://blog.csdn.net/kikajack/article/details/79751026
 env_file    ：可以给docker-compose.yml中的变量用，也可以给容器中的环境变量用，默认文件为./.env，如果使用默认文件，则可以不在docker-compose.yml中明确指定。docker-compose.yml中的变量也可以来自shell的export环境变量，如果shell与.env中的值不一样，则shell中的值优先于.env文件中指定的值。docker-compose config可以显示结果
@@ -974,9 +1019,13 @@ ${#VALUE}：计算VALUE字符串的字符数量。
 ${VALUE%.*}或${VALUE%%.*}：删除VALUE字符串中以分隔符“.”匹配的右边字符，保留左边字符。
 ${VALUE#*.}或${VALUE##*.}：删除VALUE字符串中以分隔符“.”匹配的左边字符，保留右边字符。
 ${VALUE/OLD/NEW}或${VALUE//OLD/NEW}：用NEW子串替换VALUE字符串中匹配的OLD子串。
+${VALUE#START}或${VALUE%END}：删除VALUE字符串中以【START】开始的字符，保留右边；或反之
 ...
 
+
 # awk
+#
+## 将字符串中匹配【()】中值付给变量数组
 yyy.xml
 sdf
   <key>hostname</key>
@@ -984,11 +1033,11 @@ sdf
 cat yyy.xml | grep -A 1 "hostname" |awk 'match($0, "<value>(.*)</value>", a) {print a[1]}'
 0.0.0.0
 
-# awk 字符串赋值给数组
+## awk 字符串以空格分隔赋值给变量数组
 z=(`echo $line | awk  'BEGIN{FS=" "} {for(i=1;i<=NF;i++) {print $i}}'`)
 echo ${z[0]}
 
-# 将脚本参数赋值给数组，哪怕参数值为空时也会原样保存，可用于getopt之 a:: 类型的脚本参数"
+## 将脚本参数赋值给数组，哪怕参数值为空时也会原样保存，可用于getopt之 a:: 类型的脚本参数"
 n=$#
 # 脚本参数从1开始，数组是从0开始，所以处理下，避免计算转换
 aa[0]="占位"
@@ -1002,8 +1051,7 @@ for ((i=1;i<=n;i++)); do
     echo aa数组$i列的值是: ${aa[$i]}
 done
 
-
-# awk 参考
+# awk格式化
 # https://www.cnblogs.com/emanlee/p/3327576.html
 # RS：Record Separator，记录分隔符
 # ORS：Output Record Separate，输出当前记录分隔符
@@ -1025,9 +1073,62 @@ z
 x
 c
 
-# awk输出第三列,忽略空字符（并去掉前后的空格）
+## awk输出第三列,忽略空字符（并去掉前后的空格）
 awk 'BEGIN {FS="|"} {if ($3 !~ /^ *$/) {sub(/^[[:blank:]]*/,"",$3); sub(/[[:blank:]]*$/,"",$3); printf "%2d %5s  %s\n",NR,$2,$3}}'  project.list
 等同：awk 'BEGIN {FS="|"} {if ($3 !~ /^[[:blank:]]*$/ && $3 !~ /^$/) {sub(/^[[:blank:]]*/,"",$3); sub(/[[:blank:]]*$/,"",$3); printf "%2d %5s  %s\n",NR,$2,$3}}'  project.list
+
+## awk计算
+# 参考：https://blog.csdn.net/zcb_data/article/details/80622171
+# LINE='docker-repo:5000/ufipf/fluentd-gcl 2020.08.19.092500 6e5c0736cd99 4 weeks ago 44.7MB'
+# echo $LINE | awk 'BEGIN{FS=" "} {if($5 ~ /weeks/) {printf "%s %s %s %d days_ago %s\n" ,$1,$2,$3,$4*7+1,$7}}'
+docker-repo:5000/ufipf/fluentd-gcl 2020.08.19.092500 6e5c0736cd99 29 days_ago 44.7MB
+
+## awk正则表达式匹配
+# cat ii.txt
+docker-repo:5000/ufipf/fluentd-gcl  2020.08.19.0  6e5c0736cd90  28  44.7MB
+docker-repo:5000/ufipf/fluentd-gcl  2020.08.19.1  6e5c0736cd99  88  44.7MB
+#
+# 非变量方式：
+# 精确匹配，但不能使用变量：cat ii.txt | awk '{if($2 ~  /^关键字$/)      {printf "%s\n" ,$0}}'  ---使用【~】
+#
+# AWK与SHELL之间的变量传递方法：https://blog.csdn.net/xiaolang85/article/details/79884535
+# 8 个有力的 Awk 内建变量：https://www.runoob.com/w3cnote/8-awesome-awk-built-in-variables.html
+#
+# 系统变量方式一(不能用于数值大小比较)：
+F_TAG="2020.08.19.0"
+# 注意：此种使用变量的方式，正则表达式不能使用【/^$/】这些字符，否则正则表达式不能正常运行
+cat ii.txt | awk '{if($2 == "'"${F_TAG}"'")  {printf "%s\n" ,$0}}'  ---使精确匹配，可以使用变量： 用【==】，变量使用两个【"'"】包围
+cat ii.txt | awk '{if($2 ~  "'"${F_TAG}"'")  {printf "%s\n" ,$0}}'  ---使模糊匹配，可以使用变量： 用【~】，变量使用两个【"'"】包围
+# 系统变量方式二：
+F_DAYS="50"
+cat ii.txt | awk -v awk_F_DAYS=${F_DAYS}  '{if($4 > awk_F_DAYS)  {printf "%s\n" ,$0}}'
+cat ii.txt | awk -v awk_F_DAYS=${F_DAYS}  '{if($4>awk_F_DAYS)    {printf "%s\n" ,$0}}'
+#
+## awk命令的正则表达式使用：https://my.oschina.net/u/2391658/blog/703922
+~
+==
+!=
+>
+>=
+<
+<=
+awk '{if($3 ~ /字符串/) print $0}' readfile    //包含字符串的所有记录都匹配，不精确
+awk '$3 == "字符串" {print $0}' readfile   //确保只有字符串得以匹配，精确匹配
+awk '{if($4 !~ /匹配字符串/) print $0}' readfile
+awk '{if($6<$7) print "xxx"}' readfile
+awk '{if($6<=$7) print "xxx"}' readfile
+awk '{if($6>$7) print "xxx"}' readfile
+awk '/[Gg]reen/' readfile   //匹配green Green的行
+awk '$1 ~/^...a/' readfile  //抽取域1，其记录第一域的第四个字符时a
+awk '$0 ~ /(字符串1|字符串2)/' readfile   //匹配|两边模式之一，使用或关系符时，语句必须用圆括号括起来
+awk '/^字符串/' readfile
+&&  AND：语句两边必须同时为真
+||  OR：语句两边同时或其中一边匹配为真
+!   非 求逆
+# 注意：使用变量时，正则表达式不能使用【/^$/】这些字符，否则正则表达式不能正常运行
+# 精确匹配，但不能使用变量：cat ${DOCKER_IMAGES_FILE_FORMAT} | awk '{if($2 ~  /^关键字$/)      {printf "%s\n" ,$0}}'  ---使用【~】
+# 精确匹配，可以使用变量：  cat ${DOCKER_IMAGES_FILE_FORMAT} | awk '{if($2 == "'"${F_TAG}"'")  {printf "%s\n" ,$0}}'  ---使用【==】，变量使用两个【"'"】包围
+# 模糊匹配，可以使用变量：  cat ${DOCKER_IMAGES_FILE_FORMAT} | awk '{if($2 ~  "'"${F_TAG}"'")  {printf "%s\n" ,$0}}'  ---使用【~】，变量使用两个【"'"】包围
 
 
 #
@@ -1124,13 +1225,39 @@ lsof -p [PID]
 # 查看端口连接信息
 lsof -i :[端口]
 
+# shell中的(),(()),{},=,==,[],[[]]几种语法用法
+# https://blog.csdn.net/Michaelwubo/article/details/81698307
+
 
 # 文件中的%unicode转换为汉字
-# 源文件：file:///shouji/music-all/%E7%BE%8E%E7%BE%8E%E5%93%92_%E9%97%A8%E4%B8%BD.mp3
-# 先转换为：file:///shouji/music-all/\xE7\xBE\x8E\xE7\xBE\x8E\xE5\x93\x92_\xE9\x97\xA8\xE4\xB8\xBD.mp3
+# 源文件（url编码）：file:///shouji/music-all/%E7%BE%8E%E7%BE%8E%E5%93%92_%E9%97%A8%E4%B8%BD.mp3
+# 先转换为(什么码？)：file:///shouji/music-all/\xE7\xBE\x8E\xE7\xBE\x8E\xE5\x93\x92_\xE9\x97\xA8\xE4\xB8\xBD.mp3
 # 再echo成汉字
-cat 1.m3u | sed  's/\\/\\\\/g;s/\(%\)\([0-9a-fA-F][0-9a-fA-F]\)/\\x\2/g' > 11.m3u
+cat 1.m3u | sed    's#\\#\\\\#g;s#\(%\)\([0-9a-fA-F][0-9a-fA-F]\)#\\x\2#g' > 11.m3u
+cat 1.m3u | sed -r 's#\\#\\\\#g;s#(%)([0-9a-fA-F][0-9a-fA-F])#\\x\2#g' > 11.m3u
 echo -e "`cat 11.m3u`" > 11.m3u
+echo -e $( echo 'file:///shouji/music-all/%E7%BE%8E%E7%BE%8E%E5%93%92_%E9%97%A8%E4%B8%BD.mp3'  |  sed -r 's#\\#\\\\#g;s#(%)([0-9a-fA-F][0-9a-fA-F])#\\x\2#g' )
+# 汉字【中】转码为以下格式：
+# url      %E4%B8%AD
+# 加密url  %4e2d
+# utf8     %u4E2D
+# unicode  \u4e2d     &#x: &#x4e2d;
+# ascii    &#20013;   (十进制'20013' = 十六进制 '4E2D')
+
+# 汉字转码
+# 同理，你可以借助xxd转换为其他格式
+content='我来了'
+echo "$content" | xxd -ps                            #--- 转换为16进制
+echo "$content" | xxd -ps  | sed 's/\(..\)/%\1/g'    #--- 转换为url样式
+echo "$content" | xxd -ps  | sed 's/\(..\)/%\1/g' | tr -d '\n'    #--- 转换为url样式，删除换行符
+
+
+# sed用其他字符作为分隔符
+# 例如：#
+# 在搜索模式下，需转义第一个分隔符，后面的不用转义
+echo -e  "aaa disk \n sss"  | sed -n "\#disk#p"
+# 在替换模式下，可以不用转义
+echo -e  "aaa disk \n sss"  | sed -n "s#disk#ddddddd#p"
 
 
 # 转换windows下制作的文件(换行符^M)
@@ -1328,6 +1455,59 @@ w | sed '1d' |awk '{$2=$6=$7=""; print $0}'     #--- 不输出指定列（将相
 # awk BEGIN END 用法
 awk -F: 'BEGIN {print "REDHAT"} {print NR;print} END {print "WESTOS"}' /etc/passwd
 
+# sed
+$ cat 1.htm
+<A>111111</A>
+<B>1</B>
+<C></C>
+<d>
+    <A>111222</A>
+    <E>33</E>
+</d>
+<F>99</F>
+=======
+<A>222222</A>
+<B>1</B>
+<C></C>
+<d>
+    <A>222333</A>
+    <E>33</E>
+</d>
+<F>99</F>
+# 示例命令：
+## 搜索出 从匹配【<d>】的行开始，到【文件末尾】所有的行，并输出到屏幕
+$ sed -n  '/<d>/,$p' 1.htm
+## 搜索出 从匹配【<d>】的行开始，到匹配【行尾】的行结束之间的行，并输出到屏幕($，这个没有实际意义，只是为了和上面的条件做比较，你可以换成有意义的匹配)
+$ sed -n  '/<d>/,/$/p' 1.htm
+## 搜索出 从匹配【<d>】的行开始，到匹配【</d>】的行结束之间的行，并输出到屏幕
+$ sed -n  '/<d>/,/<\/d>/p' 1.htm
+## 搜索出 从匹配【<d>】的行开始，到【文件末尾】所有的行，再在结果中搜索匹配【<A>】的行，并输出到屏幕
+$ sed -n  '/<d>/,${/<A>/p}' 1.htm
+## 搜索出 从匹配【<d>】的行开始，到匹配【</d>】的行结束之间的行，然后再在结果中把匹配【以<A>开始，以</A>结束的行】替换为【<A>、</A>之间的字符串】，直接写入文件
+sed -i '/<d>/,/<\/d>/{s/.*<A>\(.*\)<\/A>/\1/}'  1.htm
+## 条件同上，直接输出到屏幕，不写入文件
+sed -n '/<d>/,/<\/d>/{s/.*<A>\(.*\)<\/A>/\1/p}'  1.htm
+## 搜索出 从匹配【<d>】的行开始，到匹配【</d>】的行结束之间的行，然后再在结果中搜索出匹配【<A>】的行，再在结果中把匹配【以<A>开始，以</A>结束的行】替换为【<A>、</A>之间的字符串】，把替换内容输出到屏幕
+sed -n '/<d>/,/<\/d>/{/<A>/s/.*<A>\(.*\)<\/A>/\1/p}'  1.htm
+## 匹配值的用法 \1 \2
+$ echo 'abcabcabc' | sed 's/\(ab\)\(c\)/\1 xxx \2/g'
+ab xxx cab xxx cab xxx c
+## 匹配第4次
+$ echo 'aaaaaa' | sed 's/a/A/4'
+aaaAaa
+## 在匹配行前后加入一行:
+#行前加
+sed -i '/allow linux.com/i\allow linux.cn' the.conf.file
+#行前后
+sed -i '/allow linux.com/a\allow linux.cn' the.conf.file
+
+
+# echo用法：
+X=`cat a.txt`   #a.txt是一个多行文本
+echo "$X"       #输出结果会换行
+echo $X         #输出结果不会换行，而是以一个空格代替换行符
+
+
 
 # 获取web服务器、邮件服务器证书方法：
 echo -n | openssl s_client -connect www.gc-life.com:443
@@ -1346,6 +1526,94 @@ ss state established '( dport = :ssh or sport = :ssh )'
 # 测试udp侦听端口是否开启：（nc -v -u 8.8.8.8 53 ：这种测试其他服务的udp端口不行，可能是因为udp无需握手）
 nc -v -u -l 5555
 nc -v -u    ip 5555
+
+# smb
+# 列出某个IP地址所提供的共享文件夹
+smbclient -L 198.168.0.1 -U username%password
+# 像ftp客户端一样使用smbclient
+smbclient //192.168.0.1/tmp  -U username%password
+# 直接一次性使用smbclient命令
+smbclient -c "mkdir share1" //192.168.0.1/tmp -U username%password
+
+# nextcloud值webdav连接
+# 参考：https://docs.nextcloud.com/server/13/user_manual/files/access_webdav.html
+davs://[USERNAME]@[SERVER_IP]:[PORT]/remote.php/dav/files/[USERNAME]
+davs://admin@nextcloud.zjlh.lan/remote.php/dav/files/admin/
+如果是通过http连接，则将【davs://】替换为【dav://】
+
+
+# ipv6
+# https://segmentfault.com/a/1190000008794218
+IPv6地址有两种类型，一种是Scope:Global，另一种为Scope:Link, 后者是有MAC地址通过一定的格式转换出来的全球唯一的本地链路地址。
+在实际使用中发现两个问题，1、不能直接ping通。2、ping通了但是connect不上。这是因为，Scope:Link地址必须绑定网卡。
+Windows
+C:/>ping fe80::21c:a0ff:fec5:16cd%6
+%6  表示接口编号
+Linux
+#ping类型为“Scope:Link”的地址
+$ ping6 -I eth0 fe80::21a:a5ff:fec1:1060
+$ ping6         fe80::21a:a5ff:fec1:1060%eth0
+由于Link-Local地址的形式都是： FE80::a:b:c:d 格式，不带任何子网信息等指示路由。因此如果有多个网卡的机器上就有多个Link-Local地址，就必须指定从哪个接口出去，否则系统不知道是哪条链路上的地址。
+#ping类型为“Scope:Global”的地址
+dev@ubuntu:~$ ping6 2001::1
+#或者根据enp0s3的id来ping
+#获取enp0s3的id
+dev@ubuntu:~$ grep enp0s3 /proc/net/if_inet6 | cut -d' ' -f2 | uniq
+02
+dev@ubuntu:~$ ping6 fe80::188d:cbae:80d5:7a7a%2
+# 也行
+dev@ubuntu:~$ ping6 fe80::188d:cbae:80d5:7a7a%enp0s3
+#ping环回地址和global地址时，直接ping就可以了，而ping多播和Link-Local地址时，需要指定从哪个接口出去，这是因为机器上所有接口的Link-Local地址都属于同一个网段，当有多个接口时，根本没办法自动的判断应该从哪个接口出去
+
+# docker
+# 查看空间占用
+docker system df
+docker system df -v
+# docker images格式化
+docker images --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedAt}}\t{{.Size}}'
+docker images --format 'table {{.ID}}'
+docker images --format '{{.ID}}'
+docker images --format 'xxx {{.ID}}'
+# 旧镜像删除
+# https://docs.docker.com/engine/reference/commandline/image_prune/#filtering
+# docker image prune -a
+#    until (<timestamp>) - only remove images created before given timestamp
+#    label (label=<key>, label=<key>=<value>, label!=<key>, or label!=<key>=<value>)
+docker image prune --filter="label=maintainer=john"
+docker image prune --filter="label!=maintainer=john"
+docker image prune --filter "foo=bar" --filter "bif=baz"
+docker image prune -a --force --filter "until=24h"
+docker image prune -a --force --filter "until=2017-01-04T00:00:00"
+
+
+# 修改python默认版本
+alternatives --set python /usr/bin/python3
+
+# hw硬件信息
+sudo lshw -numeric -class network
+
+# curl
+curl  --silent  --output /dev/null  --write-out '%{http_code}'   https://www.baidu.com
+
+# 剪贴板
+$ xclip -o  -selection clipboard  -target TARGETS    #--- 列出粘贴目标
+TIMESTAMP
+TARGETS
+SAVE_TARGETS
+MULTIPLE
+STRING
+UTF8_STRING
+TEXT
+text/plain
+text/html
+$ xclip -o  -selection clipboard  -target UTF8_STRING    #--- 粘贴出目标格式内容
+分类专栏： Linux/Shell
+$ xclip -o  -target UTF8_STRING
+分类专栏： Linux/Shell
+$ xclip -o
+分类专栏： Linux/Shell
+$ xclip -o   -selection clipboard  -target image/png  > 2.png   #--- 截图输出到文件2.png
+
 
 
 --add-masquerade     snat就是ip地址伪装，是将接收到的请求的源地址设置为转发请 求网卡的地址

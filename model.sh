@@ -41,12 +41,18 @@ F_HELP()
     用途：用于
     注意：本脚本需要
     用法:
-          sh $0 [-h|--help]
-          sh $0 [-r|--resotore] [PATH_TO_FILENAME]  [数据库名]     #--- 恢复，文件须为gzip格式
+        $0 [-h|--help]
+        $0 [-r|--resotore] [PATH_TO_FILENAME]  [数据库名]     #--- 恢复，文件须为gzip格式
     参数说明：
-          -r|--resotore    还原
+        \$0   : 代表脚本本身
+        []   : 代表是必选项
+        <>   : 代表是可选项
+        |    : 代表左右选其一
+        {}   : 代表参数值，请替换为具体参数值
+        #
+        -r|--resotore    还原
     示例：
-          sh $0 [-r|--resotore] [PATH_TO_FILENAME]  [数据库名]     #--- 恢复
+        $0 [-r|--resotore] [PATH_TO_FILENAME]  [数据库名]     #--- 恢复
     "
 }
 
