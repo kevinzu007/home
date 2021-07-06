@@ -1595,6 +1595,14 @@ sudo lshw -numeric -class network
 # curl
 curl  --silent  --output /dev/null  --write-out '%{http_code}'   https://www.baidu.com
 
+# nl（对行进行编号）
+# nl命令用来计算文件中行号，可以将输出的文件内容自动的加上行号及更多用法
+nl --help     #帮助
+nl 1.txt
+nl -nrz 1.txt
+nl -ba 1.txt
+
+
 # 剪贴板
 $ xclip -o  -selection clipboard  -target TARGETS    #--- 列出粘贴目标
 TIMESTAMP
